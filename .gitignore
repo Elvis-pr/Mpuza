@@ -5,6 +5,10 @@ client/node_modules/
 # Builds
 client/dist/
 dist/
+*.tsbuildinfo
+client/*.tsbuildinfo
+client/vite.config.js
+client/vite.config.d.ts
 
 # Env secrets (never push real keys)
 server/.env
