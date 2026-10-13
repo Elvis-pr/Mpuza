@@ -78,7 +78,10 @@ export interface MatchResponse {
 /** Filter/pagination state for opportunities */
 export type Filter = 'all' | 'internship' | 'fulltime';
 
+export type RegionFilter = 'all' | 'rwanda';
+
 export interface OpportunityFilters {
   q: string;
   type: Filter;
+  region: RegionFilter;
 }

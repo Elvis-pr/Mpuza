@@ -1,9 +1,9 @@
 import React from 'react';
-import { Opportunity } from '../types';
-import { matchOpportunities } from '../lib/api';
+import { Opportunity, OpportunityFilters } from '../types';
+import { JobRegion, matchOpportunities } from '../lib/api';
 
 export interface MatchSectionProps {
-  filters: { q: string; type: 'all' | 'internship' | 'fulltime' };
+  filters: OpportunityFilters;
   onClose: () => void;
 }
 
@@ -25,7 +25,8 @@ export const MatchSection: React.FC<MatchSectionProps> = ({ filters, onClose }) 
         year: 'second-year',
         location: 'Remote',
       };
-      const data = await matchOpportunities(profile);
+      const region: JobRegion = filters.region === 'rwanda' ? 'rwanda' : 'all';
+      const data = await matchOpportunities(profile, region);
       if (!data.success || !Array.isArray(data.matched)) {
         setError(data.message || 'Could not compute matches.');
         return;

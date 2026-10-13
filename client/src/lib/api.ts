@@ -28,19 +28,24 @@ export interface LiveMeta {
 
 export type JobSource = 'all' | 'curated' | 'live';
 
+export type JobRegion = 'all' | 'rwanda';
+
 export async function listOpportunities({
   q = '',
   type = 'all',
   source = 'all',
+  region = 'all',
 }: {
   q?: string;
   type?: 'all' | 'internship' | 'fulltime';
   source?: JobSource;
+  region?: JobRegion;
 }): Promise<OpportunitiesResponse & { live?: LiveMeta }> {
   const params = new URLSearchParams();
   if (q.trim()) params.set('q', q.trim());
   if (type !== 'all') params.set('type', type);
   if (source !== 'all') params.set('source', source);
+  if (region !== 'all') params.set('region', region);
   const query = params.toString();
   const res = await fetch(`${API}/opportunities?${query}`);
   return res.json();
@@ -52,9 +57,10 @@ export async function listResources(): Promise<CareerResource[]> {
   return data.resources ?? [];
 }
 
-export async function matchOpportunities(profile: unknown) {
+export async function matchOpportunities(profile: unknown, region: JobRegion = 'all') {
   const params = new URLSearchParams();
   params.set('studentProfile', JSON.stringify(profile));
+  if (region !== 'all') params.set('region', region);
   const res = await fetch(`${API}/opportunities/match?${params.toString()}`);
   return res.json();
 }

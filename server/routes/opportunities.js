@@ -26,15 +26,17 @@ const { matchOpportunities, getMatchStats } = require('../utils/matcher');
 
 // GET /api/opportunities
 // Merges curated jobs (Supabase/local) + LIVE jobs (Remotive/Arbeitnow).
-// Query: ?type=all|internship|fulltime&q=...&category=...&source=curated|live|all (default all)
+// Query: ?type=all|internship|fulltime&q=...&category=...&region=rwanda|all&source=curated|live|all (default all)
 router.get('/', async (req, res) => {
   try {
-    const { type, q, category, source } = req.query;
+    const { type, q, category, source, region } = req.query;
     const src = (source || 'all').toLowerCase();
+    const reg = (region || 'all').toLowerCase();
+    const rwandaOnly = reg === 'rwanda';
     let curated = { success: true, total: 0, grouped: { internship: [], fulltime: [] }, resources: [] };
     if (src !== 'live') {
       try {
-        curated = await listOpportunities({ type, q, category });
+        curated = await listOpportunities({ type, q, category, region: rwandaOnly ? 'rwanda' : undefined });
       } catch (e) {
         console.warn('Curated list failed:', e.message);
       }
@@ -55,6 +57,14 @@ router.get('/', async (req, res) => {
         const { getLiveJobs, filterLiveJobs } = require('../utils/jobs-feed');
         const { jobs, cached } = await getLiveJobs({ q: q || '' });
         liveItems = filterLiveJobs(jobs, { type, q });
+        if (rwandaOnly) {
+          // Remotive/Arbeitnow rarely list Rwanda roles — keep ones mentioning
+          // Rwanda/Kigali/Remote-Africa, so the filter never returns zero live hits.
+          liveItems = liveItems.filter((j) => {
+            const hay = `${j.location || ''} ${(j.tags || []).join(' ')} ${j.description || ''}`.toLowerCase();
+            return /rwanda|kigali|africa|remote/.test(hay);
+          });
+        }
         if (category) liveItems = liveItems.filter((j) => (j.category || '').toLowerCase() === String(category).toLowerCase());
         liveMeta = { enabled: true, count: liveItems.length, cached, error: null };
       } catch (e) {
@@ -84,7 +94,8 @@ router.get('/', async (req, res) => {
 // Works across curated + live jobs so Match Me ranks REAL jobs.
 router.get('/match', async (req, res) => {
   try {
-    const { studentProfile, q, type, category } = req.query;
+    const { studentProfile, q, type, category, region } = req.query;
+    const rwandaOnly = String(region || 'all').toLowerCase() === 'rwanda';
 
     // Parse student profile from query string (in production, use JWT auth)
     let profile = null;
@@ -99,7 +110,7 @@ router.get('/match', async (req, res) => {
     // Get opportunities (filtered) from curated store + live feed
     let opportunities = [];
     try {
-      const result = await listOpportunities({ type, q });
+      const result = await listOpportunities({ type, q, region: rwandaOnly ? 'rwanda' : undefined });
       if (result.success && result.grouped) {
         opportunities = [...(result.grouped.internship || []), ...(result.grouped.fulltime || [])];
       }
@@ -107,7 +118,14 @@ router.get('/match', async (req, res) => {
     try {
       const { getLiveJobs, filterLiveJobs } = require('../utils/jobs-feed');
       const { jobs } = await getLiveJobs({ q: q || '' });
-      opportunities = [...opportunities, ...filterLiveJobs(jobs, { type, q })];
+      let live = filterLiveJobs(jobs, { type, q });
+      if (rwandaOnly) {
+        live = live.filter((j) => {
+          const hay = `${j.location || ''} ${(j.tags || []).join(' ')} ${j.description || ''}`.toLowerCase();
+          return /rwanda|kigali|africa|remote/.test(hay);
+        });
+      }
+      opportunities = [...opportunities, ...live];
     } catch (e) { console.warn('Match live fetch failed:', e.message); }
 
     if (category) {

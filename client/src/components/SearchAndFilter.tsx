@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from './Button';
-import { Filter, OpportunityFilters } from '../types';
+import { Filter, OpportunityFilters, RegionFilter } from '../types';
 
 const FILTER_LABELS: Record<Filter, string> = {
   all: 'All',
@@ -14,6 +14,7 @@ export interface SearchAndFilterProps {
   loading: boolean;
   onSearch: (e: React.FormEvent) => void;
   onFilter: (t: Filter) => void;
+  onRegion: (r: RegionFilter) => void;
   onClearSearch: () => void;
   onToggleMatch: () => void;
   showMatch: boolean;
@@ -26,6 +27,7 @@ export const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
   loading,
   onSearch,
   onFilter,
+  onRegion,
   onClearSearch,
   onToggleMatch,
   showMatch,
@@ -71,6 +73,14 @@ export const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
               {FILTER_LABELS[t]}
             </button>
           ))}
+          <button
+            className={`chip ${filters.region === 'rwanda' ? 'active' : ''}`}
+            onClick={() => onRegion(filters.region === 'rwanda' ? 'all' : 'rwanda')}
+            title="Show only Rwanda-based roles"
+          >
+            <span className="chip-icon">🇷🇼</span>
+            Rwanda only
+          </button>
         </div>
       </div>
     </div>

@@ -57,10 +57,21 @@ function loadData() {
 }
 
 /**
+ * True when an opportunity is based in Rwanda (Kigali + districts).
+ * Checks location text and rwanda-region tags.
+ */
+function isRwandaOpportunity(opp = {}) {
+  const loc = String(opp.location || '').toLowerCase();
+  if (/rwanda|kigali|muhanga|musanze|rubavu|huye|rusizi|nyagatare|karongi|gasabo|kicukiro|nyarugenge/.test(loc)) return true;
+  const tags = (opp.tags || []).map((t) => String(t).toLowerCase());
+  return tags.includes('rwanda');
+}
+
+/**
  * List opportunities with optional filtering
  * Returns grouped results (internship / fulltime)
  */
-async function listOpportunities({ type, q, category } = {}) {
+async function listOpportunities({ type, q, category, region } = {}) {
   if (isSupabaseConfigured) {
     try {
       let { data, error } = await supabase
@@ -87,6 +98,9 @@ async function listOpportunities({ type, q, category } = {}) {
       }
       if (category) {
         items = items.filter(opp => opp.category === category);
+      }
+      if (region === 'rwanda') {
+        items = items.filter(isRwandaOpportunity);
       }
 
       const grouped = {
@@ -117,6 +131,9 @@ async function listOpportunities({ type, q, category } = {}) {
     }
     if (category) {
       items = items.filter(opp => opp.category === category);
+    }
+    if (region === 'rwanda') {
+      items = items.filter(isRwandaOpportunity);
     }
 
     const grouped = {

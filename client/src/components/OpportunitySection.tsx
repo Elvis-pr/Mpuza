@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import type { Opportunity, OpportunityFilters, OpportunityGrouped } from '../types';
-import { Application, JobSource, LiveMeta, createApplication, listApplications, listOpportunities } from '../lib/api';
+import type { Opportunity, OpportunityFilters, OpportunityGrouped, RegionFilter } from '../types';
+import { Application, JobRegion, JobSource, LiveMeta, createApplication, listApplications, listOpportunities } from '../lib/api';
 import { SearchAndFilter } from './SearchAndFilter';
 import { OpportunityCard } from './OpportunityCard';
 import { MatchSection } from './MatchSection';
@@ -12,7 +12,7 @@ export interface OpportunitySectionProps { resources?: never; }
 const FILTER_LABEL: Record<'all'|'internship'|'fulltime', string> = { all: 'Open Opportunities', internship: 'Internships', fulltime: 'Full-Time' };
 
 export const OpportunitySection: React.FC<OpportunitySectionProps> = () => {
-  const [filters, setFilters] = useState<OpportunityFilters>({ q: '', type: 'all' });
+  const [filters, setFilters] = useState<OpportunityFilters>({ q: '', type: 'all', region: 'all' });
   const [source, setSource] = useState<JobSource>('all');
   const [query, setQuery] = useState('');
   const [grouped, setGrouped] = useState<OpportunityGrouped>({ internship: [], fulltime: [], total: 0, resources: [] });
@@ -32,19 +32,21 @@ export const OpportunitySection: React.FC<OpportunitySectionProps> = () => {
     (async () => {
       setLoading(true); setError(null);
       try {
-        const data = await listOpportunities({ q: filters.q, type: filters.type, source });
+        const region: JobRegion = filters.region === 'rwanda' ? 'rwanda' : 'all';
+        const data = await listOpportunities({ q: filters.q, type: filters.type, source, region });
         if (!data.success) { setError(data.message||'Failed to load opportunities.'); return; }
         if (active) { setGrouped(data.grouped); setTotal(data.total); setLive(data.live); }
       } catch { if (active) setError('Something went wrong while loading.'); }
       finally { if (active) setLoading(false); }
     })();
     return () => { active = false; };
-  }, [filters.q, filters.type, source]);
+  }, [filters.q, filters.type, filters.region, source]);
   const appliedIds = React.useMemo(()=>new Set(apps.filter(a=>a.status!=='saved').map(a=>a.opportunity_id)),[apps]);
   const savedIds = React.useMemo(()=>new Set(apps.filter(a=>a.status==='saved').map(a=>a.opportunity_id)),[apps]);
   const handleFilter = useCallback((t:'all'|'internship'|'fulltime')=>{ setFilters(p=>({...p,type:t})); },[]);
+  const handleRegion = useCallback((r:RegionFilter)=>{ setFilters(p=>({...p,region:r})); },[]);
   const handleSearch = useCallback((e:React.FormEvent)=>{ e.preventDefault(); setFilters(p=>({...p,q:query})); },[query]);
-  const handleClearSearch = useCallback(()=>{ setQuery(''); setFilters(p=>({q:'',type:p.type})); },[]);
+  const handleClearSearch = useCallback(()=>{ setQuery(''); setFilters(p=>({q:'',type:p.type,region:p.region})); },[]);
   const snapshotOf = (opp:Opportunity)=>({ title:opp.title, company:opp.company, location:opp.location, url:opp.url, source:opp.source });
   const handleApply = useCallback(async (opp:Opportunity)=>{
     try {
@@ -63,7 +65,7 @@ export const OpportunitySection: React.FC<OpportunitySectionProps> = () => {
       await refreshApps(); setToast(savedIds.has(opp.id)?'Moved to Applied.':'Saved to My Applications!');
     } catch { setToast('Could not save right now.'); }
   },[apps,refreshApps,savedIds]);
-  const hasActiveFilter = filters.q!==''||filters.type!=='all';
+  const hasActiveFilter = filters.q!==''||filters.type!=='all'||filters.region!=='all';
   const allOpps=[...grouped.internship,...grouped.fulltime];
   return (
     <div>
@@ -71,7 +73,7 @@ export const OpportunitySection: React.FC<OpportunitySectionProps> = () => {
       <div className="chips" style={{marginBottom:'var(--space-4)'}}><button className={`chip ${tab==='browse'?'active':''}`} onClick={()=>setTab('browse')}>Browse jobs</button><button className={`chip ${tab==='tracked'?'active':''}`} onClick={()=>setTab('tracked')}>My Applications ({apps.length})</button></div>
       {tab==='tracked' ? (<Tracker applications={apps} onChange={refreshApps} />) : (<>
         {showMatch && <MatchSection filters={filters} onClose={()=>setShowMatch(false)} />}
-        <SearchAndFilter q={query} onChangeQ={setQuery} filters={filters} loading={loading} onSearch={handleSearch} onFilter={handleFilter} onClearSearch={handleClearSearch} onToggleMatch={()=>setShowMatch(v=>!v)} showMatch={showMatch} />
+        <SearchAndFilter q={query} onChangeQ={setQuery} filters={filters} loading={loading} onSearch={handleSearch} onFilter={handleFilter} onRegion={handleRegion} onClearSearch={handleClearSearch} onToggleMatch={()=>setShowMatch(v=>!v)} showMatch={showMatch} />
         <div className="chips" style={{marginTop:'var(--space-3)'}}>{(['all','live','curated'] as JobSource[]).map(s=>(<button key={s} className={`chip ${source===s?'active':''}`} onClick={()=>setSource(s)}>{s==='all'?'All jobs':s==='live'?'Live jobs':'Curated'}</button>))}</div>
         {loading ? (<div className="card" style={{padding:'var(--space-5)',marginTop:'var(--space-4)'}}><div className="skeleton" style={{height:'16px',width:'100%'}} /><div className="skeleton" style={{height:'16px',width:'100%',marginTop:'var(--space-3)'}} /></div>) : error ? (<div className="card" style={{padding:'var(--space-5)',textAlign:'center',marginTop:'var(--space-4)'}}><p>{error}</p></div>) : allOpps.length===0 ? (<div className="card" style={{padding:'var(--space-5)',textAlign:'center',marginTop:'var(--space-4)'}}><h3>No opportunities found</h3><p>Try a different search or filter.</p></div>) : (<div className="grid grid-auto" style={{marginTop:'var(--space-4)'}}>{allOpps.map(opp=>(<OpportunityCard key={opp.id} opportunity={opp} applied={appliedIds.has(opp.id)} saved={savedIds.has(opp.id)} onApply={handleApply} onSave={handleSave} onDetails={setDetail} />))}</div>)}
       </>)}
