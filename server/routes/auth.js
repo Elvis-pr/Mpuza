@@ -50,9 +50,9 @@ router.post('/login', async (req, res) => {
 // GET /api/auth/me
 router.get('/me', async (req, res) => {
   try {
-    const user = store.getUserByToken(bearer(req));
+    const user = await store.getUserByToken(bearer(req));
     if (!user) return res.status(401).json({ success: false, message: 'Not logged in' });
-    res.json({ success: true, user });
+    res.json({ success: true, user, persistent: store.useSupabase() });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -61,7 +61,7 @@ router.get('/me', async (req, res) => {
 // POST /api/auth/logout
 router.post('/logout', async (req, res) => {
   try {
-    store.revokeToken(bearer(req));
+    await store.revokeToken(bearer(req));
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

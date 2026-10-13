@@ -3,13 +3,13 @@
  * - Logged-in: token -> user.id (per-user tracking, syncs across devices)
  * - Guest: profileId from client (guest-xxxx, per-browser tracking)
  */
-function resolveProfileId(req) {
+async function resolveProfileId(req) {
   try {
     const h = req.headers.authorization || '';
     const m = h.match(/^Bearer\s+(.+)$/i);
     if (m) {
       const store = require('../utils/auth-store');
-      const user = store.getUserByToken(m[1].trim());
+      const user = await store.getUserByToken(m[1].trim());
       if (user?.id) return user.id;
     }
   } catch {}

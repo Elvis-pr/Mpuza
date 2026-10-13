@@ -21,7 +21,7 @@ const { resolveProfileId } = require('../utils/auth-middleware');
 router.get('/', async (req, res) => {
   try {
     const { status } = req.query;
-    const profileId = resolveProfileId(req);
+    const profileId = await resolveProfileId(req);
     const applications = await store.listApplications({ profileId, status });
     res.json({ success: true, applications, persistent: store.useSupabase() });
   } catch (err) {
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
   try {
     const { opportunity_id, notes, snapshot } = req.body;
     if (!opportunity_id) return res.status(400).json({ success: false, message: 'opportunity_id required' });
-    const profileId = resolveProfileId(req);
+    const profileId = await resolveProfileId(req);
     const { application, deduped } = await store.createApplication({
       opportunity_id, profile_id: profileId, notes, snapshot,
     });

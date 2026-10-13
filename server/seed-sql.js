@@ -137,12 +137,52 @@ CREATE TRIGGER trg_applications_updated_at
   BEFORE UPDATE ON applications
   FOR EACH ROW EXECUTE FUNCTION set_applications_updated_at();
 
+-- ==================== AUTH TABLES: USERS + SESSIONS (persistent login on Vercel) ====================
+
+-- Without these, auth falls back to per-instance memory on Vercel (users vanish
+-- on cold start). Run the SQL below in Supabase, then set SUPABASE_URL +
+-- SUPABASE_ANON_KEY in Vercel env vars to make registrations permanent.
+
+CREATE TABLE IF NOT EXISTS users (
+  id              text PRIMARY KEY,
+  name            text NOT NULL,
+  email           text NOT NULL UNIQUE,
+  salt            text NOT NULL,
+  password_hash   text NOT NULL,
+  created_at      timestamp with time zone DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  token           text PRIMARY KEY,
+  user_id         text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at      timestamp with time zone DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
+
+-- Anon-key access (same pattern as applications: only the server calls these).
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "public all" ON users;
+CREATE POLICY "public all" ON users FOR ALL USING (true) WITH CHECK (true);
+
+ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "public all" ON sessions;
+CREATE POLICY "public all" ON sessions FOR ALL USING (true) WITH CHECK (true);
+
 -- ==================== VERIFY SEED ====================
 
 -- Count opportunities
 SELECT 'opportunities' AS table_name, COUNT(*) AS row_count FROM opportunities
 UNION ALL
-SELECT 'career_resources' AS table_name, COUNT(*) FROM career_resources;
+SELECT 'career_resources' AS table_name, COUNT(*) FROM career_resources
+UNION ALL
+SELECT 'applications' AS table_name, COUNT(*) FROM applications
+UNION ALL
+SELECT 'users' AS table_name, COUNT(*) FROM users
+UNION ALL
+SELECT 'sessions' AS table_name, COUNT(*) FROM sessions;
 `;
 
 module.exports = SEED_SQL;
