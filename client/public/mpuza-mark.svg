@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="MPUZA logo">
+  <defs>
+    <!-- Signature MPUZA gradient: sunrise orange -> ember -> deep teal (campus to career) -->
+    <linearGradient id="mpuzaGrad" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFB25A"/>
+      <stop offset="0.48" stop-color="#F97316"/>
+      <stop offset="0.78" stop-color="#C2410C"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+    <linearGradient id="mpuzaSheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="0.45" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="mpuzaClip">
+      <rect x="4" y="4" width="88" height="88" rx="26"/>
+    </clipPath>
+  </defs>
+
+  <!-- Squircle base -->
+  <rect x="4" y="4" width="88" height="88" rx="26" fill="url(#mpuzaGrad)"/>
+  <!-- Soft top light + bottom depth -->
+  <rect x="4" y="4" width="88" height="88" rx="26" fill="url(#mpuzaSheen)"/>
+  <g clip-path="url(#mpuzaClip)">
+    <ellipse cx="78" cy="82" rx="42" ry="30" fill="#0F766E" opacity="0.35"/>
+    <ellipse cx="18" cy="18" rx="30" ry="22" fill="#FFFFFF" opacity="0.14"/>
+  </g>
+  <!-- Border -->
+  <rect x="4.75" y="4.75" width="86.5" height="86.5" rx="25" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5"/>
+
+  <!-- The "Ascend M": left peak = campus, right peak launches into an arrow = career -->
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main M with ascending right arm -->
+    <path d="M22 68 L22 30 L40 52 L56 28 L72 28" stroke-width="8.5"/>
+    <!-- Arrowhead on the career arm (unique upward-right launch) -->
+    <path d="M62 20 L73 28 L63 37" stroke-width="6.5"/>
+  </g>
+  <!-- The Opportunity Dot: sun rising in the valley of the M -->
+  <circle cx="40" cy="34" r="5.2" fill="#FFF7ED"/>
+  <circle cx="40" cy="34" r="5.2" fill="none" stroke="#7C2D12" stroke-opacity="0.25" stroke-width="1"/>
+  <!-- Bridge arc: campus-to-career path under the M -->
+  <path d="M22 68 Q48 78 74 60" fill="none" stroke="#5EEAD4" stroke-width="3.5" stroke-linecap="round" opacity="0.9"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MPUZA favicon">
+  <defs>
+    <linearGradient id="mpuzaFavGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFB25A"/>
+      <stop offset="0.5" stop-color="#F97316"/>
+      <stop offset="0.8" stop-color="#C2410C"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="17" fill="url(#mpuzaFavGrad)"/>
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 47 L13 19 L27 36 L39 17.5 L50 17.5" stroke-width="6.5"/>
+    <path d="M43 12 L50.5 17.7 L44 23.6" stroke-width="4.6"/>
+  </g>
+  <circle cx="27" cy="21.5" r="3.6" fill="#FFF7ED"/>
+  <path d="M13 47 Q33 54 51 41" fill="none" stroke="#5EEAD4" stroke-width="2.6" stroke-linecap="round" opacity="0.95"/>
+</svg>

@@ -1,0 +1,106 @@
+/**
+ * Global reset + base + typography + forms.
+ * Import in main.tsx along with layout/components styles.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Nunito:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  color-scheme: light only;
+}
+
+html {
+  @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-image: radial-gradient(circle at 1px 1px, rgb(41 37 36 / 0.02) 1px, transparent 0);
+  background-size: 24px 24px;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-surface-alt); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-400);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-neutral-500); }
+* { scrollbar-width: thin; scrollbar-color: var(--color-neutral-400) var(--color-surface-alt); }
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+  letter-spacing: var(--tracking-tight);
+}
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-3xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); }
+h6 { font-size: var(--text-base); }
+p { margin-bottom: 1em; max-width: 65ch; }
+a { color: var(--color-primary-600); text-decoration: none; transition: color var(--duration-fast) var(--ease-out-expo); }
+a:hover { color: var(--color-primary-700); }
+a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; border-radius: var(--radius-sm); }
+
+/* Lists */
+ul, ol { padding-left: var(--space-5); margin-bottom: 1em; }
+li { margin-bottom: 0.375em; line-height: var(--leading-relaxed); }
+
+/* Code / mono */
+code, pre { font-family: var(--font-mono); font-size: var(--text-sm); }
+code { background: var(--color-surface-alt); color: var(--color-neutral-700); padding: 0.15em 0.4em; border-radius: var(--radius-sm); }
+pre { background: var(--color-neutral-950); color: var(--color-neutral-100); padding: var(--space-4); border-radius: var(--radius-md); overflow-x: auto; margin: 1em 0; }
+pre code { background: transparent; color: inherit; padding: 0; }
+
+/* Navigation */
+nav { position: relative; }
+
+/* Forms */
+label { display: block; font-weight: 600; font-size: var(--text-sm); margin-bottom: var(--space-2); color: var(--color-text); }
+input, textarea, select {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  width: 100%;
+  transition: border-color var(--duration-fast) var(--ease-out-expo), box-shadow var(--duration-fast) var(--ease-out-expo), background var(--duration-fast) var(--ease-out-expo);
+}
+input::placeholder, textarea::placeholder { color: var(--color-text-light); }
+input:hover, textarea:hover, select:hover { border-color: var(--color-neutral-500); }
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary-400);
+  box-shadow: 0 0 0 4px rgb(249 115 22 / 0.18);
+}
+input:disabled, textarea:disabled, select:disabled {
+  background: var(--color-neutral-100);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+  border-color: var(--color-border);
+}

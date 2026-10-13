@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-label="MPUZA — Campus to Career">
+  <defs>
+    <linearGradient id="mpuzaHGrad" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFB25A"/>
+      <stop offset="0.48" stop-color="#F97316"/>
+      <stop offset="0.78" stop-color="#C2410C"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark -->
+  <g>
+    <rect x="2" y="6" width="52" height="52" rx="15.5" fill="url(#mpuzaHGrad)"/>
+    <rect x="2.75" y="6.75" width="50.5" height="50.5" rx="14.8" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.2"/>
+    <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 48 L12 20 L22.5 33.5 L32 18.5 L43 18.5" stroke-width="5.2"/>
+      <path d="M37 13.5 L43.4 18.7 L37.6 24.2" stroke-width="4"/>
+    </g>
+    <circle cx="22.4" cy="22.4" r="3.1" fill="#FFF7ED"/>
+    <path d="M12 48 Q29 54 44 43.5" fill="none" stroke="#5EEAD4" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
+  </g>
+  <!-- Wordmark -->
+  <g font-family="Inter, Plus Jakarta Sans, Segoe UI, system-ui, sans-serif">
+    <text x="64" y="38" font-size="26" font-weight="800" letter-spacing="-0.8" fill="#292524">MPUZA</text>
+    <text x="160" y="38" font-size="26" font-weight="800" fill="#F97316">.</text>
+    <text x="64" y="52" font-size="9.5" font-weight="700" letter-spacing="2.4" fill="#0F766E">CAMPUS TO CAREER</text>
+  </g>
+</svg>

@@ -1,0 +1,133 @@
+/**
+ * Design tokens for the MPUZA design system.
+ *
+ * These CSS custom properties are the single source of truth for
+ * colors, radii, shadows, typography, and spacing. Components reference
+ * them instead of hard-coding values, which is what keeps the whole UI
+ * cohesive and makes theming trivial.
+ */
+
+:root {
+  /* ---- Warm, friendly primary palette ---- */
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;
+  --color-primary-600: #ea580c;
+  --color-primary-700: #c2410c;
+  --color-primary-800: #9a3412;
+  --color-primary-900: #7c2d12;
+
+  /* ---- Friendly secondary (teal) for contrast & accents ---- */
+  --color-secondary-50: #f0fdfa;
+  --color-secondary-100: #ccfbf1;
+  --color-secondary-200: #99f6e4;
+  --color-secondary-300: #5eead4;
+  --color-secondary-400: #2dd4bf;
+  --color-secondary-500: #14b8a6;
+  --color-secondary-600: #0d9488;
+  --color-secondary-700: #0f766e;
+  --color-secondary-800: #115e59;
+  --color-secondary-900: #134e4a;
+
+  /* ---- Warm neutrals (friendly, not cold grey-blue) ---- */
+  --color-neutral-50: #faf5ff;
+  --color-neutral-100: #f5f3ff;
+  --color-neutral-200: #ede9fe;
+  --color-neutral-300: #d8b4fe;
+  --color-neutral-400: #c084fc;
+  --color-neutral-500: #a855f7;
+  --color-neutral-600: #8b5cf6;
+  --color-neutral-700: #7c3aed;
+  --color-neutral-800: #6d28d9;
+  --color-neutral-900: #5b21b6;
+  --color-neutral-950: #3b0764;
+
+  --color-bg: #fffaf6;
+  --color-surface: #ffffff;
+  --color-surface-alt: #fff7ed;
+  --color-text: #292524;
+  --color-text-secondary: #6b5b4f;
+  --color-text-light: #9a8a7a;
+  --color-border: #e9d8cd;
+  --color-border-strong: #d6c2b0;
+  --color-focus: #f97316;
+
+  /* ---- Semantic (friendly, warm) ---- */
+  --color-success: #10b981;
+  --color-success-bg: #ecfdf5;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fffbeb;
+  --color-danger: #ef4444;
+  --color-danger-bg: #fef2f2;
+  --color-info: #3b82f6;
+  --color-info-bg: #eff6ff;
+
+  /* ---- Radius: friendly, rounded, but not a cartoon ---- */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* ---- Shadows: soft, hugging, playful ---- */
+  --shadow-sm: 0 1px 2px rgb(41 37 36 / 0.06);
+  --shadow-md: 0 4px 12px rgb(41 37 36 / 0.10);
+  --shadow-lg: 0 10px 28px rgb(41 37 36 / 0.14);
+  --shadow-xl: 0 18px 40px rgb(41 37 36 / 0.18);
+  --shadow-glow: 0 0 0 4px rgb(249 115 22 / 0.25);
+
+  /* ---- Typography ---- */
+  --font-display: 'Inter', 'Plus Jakarta Sans', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+
+  --leading-tight: 1.1;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.05em;
+
+  /* ---- Spacing ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* ---- Layout ---- */
+  --max-width: 1200px;
+  --container: min(100% - var(--space-4), var(--max-width));
+
+  /* ---- Motion ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --duration-slow: 320ms;
+
+  /* ---- Component spacing ---- */
+  --nav-height: 64px;
+  --footer-height: auto;
+}

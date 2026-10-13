@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+client/node_modules/
+
+# Builds
+client/dist/
+dist/
+
+# Env secrets (never push real keys)
+server/.env
+.env
+.env.local
+
+# Tracking data (local dev only)
+server/data/tracking.json
+
+# Logs
+*.log
+server.log
+npm-debug.log*
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp

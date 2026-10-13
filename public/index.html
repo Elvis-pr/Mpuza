@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MPUZA – Campus Link</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-logo">🎯</span>
+      <span class="brand-name">MPUZA</span>
+    </div>
+    <div class="nav-links">
+      <a href="#" data-section="home">Home</a>
+      <a href="#" data-section="opportunities">Opportunities</a>
+      <a href="#" data-section="resources">Career Hub</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO / HOME ===== -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Find Your Next Chapter</h1>
+      <p>Your hub for campus jobs, internships, and full-time roles — plus the best career resources in one place.</p>
+      <div class="hero-actions">
+        <a href="#opportunities" class="btn btn-primary">Browse Opportunities</a>
+        <a href="#resources" class="btn btn-secondary">Career Resources</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number">120+</span>
+        <span class="stat-label">Opportunities</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">50+</span>
+        <span class="stat-label">Student-Led</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">10+</span>
+        <span class="stat-label">Career Hubs</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OPPORTUNITIES ===== -->
+  <section id="opportunities" class="section">
+    <div class="section-header">
+      <h2>Opportunities</h2>
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by title, company, or location..."
+        />
+        <button id="searchBtn" class="btn btn-secondary">Search</button>
+      </div>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="internship">Internships</button>
+      <button class="filter-btn" data-filter="fulltime">Full-Time</button>
+    </div>
+    <div id="opportunity-grid" class="opportunity-grid">
+      <div class="loading">Loading opportunities...</div>
+    </div>
+  </section>
+
+  <!-- ===== CAREER HUB ===== -->
+  <section id="resources" class="section">
+    <div class="section-header">
+      <h2>Career Hub</h2>
+      <p>Hand-picked resources to help you grow and land opportunities.</p>
+    </div>
+    <div id="resource-grid" class="resource-grid">
+      <div class="loading">Loading resources...</div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>&copy; 2026 MPUZA. Making campus-to-career transitions easier.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

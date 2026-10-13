@@ -1,0 +1,184 @@
+{
+  "skills": [
+    {
+      "id": "skill-1",
+      "name": "JavaScript",
+      "category": "programming",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-2",
+      "name": "Python",
+      "category": "programming",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-3",
+      "name": "TypeScript",
+      "category": "programming",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-4",
+      "name": "React",
+      "category": "frontend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-5",
+      "name": "Node.js",
+      "category": "backend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-6",
+      "name": "SQL",
+      "category": "data",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-7",
+      "name": "Python",
+      "category": "data",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-8",
+      "name": "Machine Learning",
+      "category": "data",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-9",
+      "name": "Figma",
+      "category": "design",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-10",
+      "name": "User Research",
+      "category": "design",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-11",
+      "name": "Agile/Scrum",
+      "category": "methodology",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-12",
+      "name": "Git",
+      "category": "methodology",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-13",
+      "name": "CSS",
+      "category": "frontend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-14",
+      "name": "HTML",
+      "category": "frontend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-15",
+      "name": "Math",
+      "category": "data",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-16",
+      "name": "Communication",
+      "category": "soft-skills",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-17",
+      "name": "Problem Solving",
+      "category": "soft-skills",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-18",
+      "name": "Team Leadership",
+      "category": "soft-skills",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-19",
+      "name": "Project Management",
+      "category": "methodology",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-20",
+      "name": "Cloud Computing",
+      "category": "backend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-21",
+      "name": "Docker",
+      "category": "backend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-22",
+      "name": "CI/CD",
+      "category": "backend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-23",
+      "name": "Testing",
+      "category": "development",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-24",
+      "name": "API Design",
+      "category": "backend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-25",
+      "name": "GraphQL",
+      "category": "backend",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-26",
+      "name": "Mobile Development",
+      "category": "mobile",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-27",
+      "name": "UI/UX Design",
+      "category": "design",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-28",
+      "name": "Data Analysis",
+      "category": "data",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-29",
+      "name": "Digital Marketing",
+      "category": "business",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    {
+      "id": "skill-30",
+      "name": "Financial Modeling",
+      "category": "business",
+      "levelOptions": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    }
+  ]
+}
