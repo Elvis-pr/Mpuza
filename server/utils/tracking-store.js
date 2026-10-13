@@ -118,4 +118,19 @@ async function updateApplication(id, { status, notes }) {
   app.updated_at = new Date().toISOString();
   saveLocal(db); return app;
 }
-module.exports = { listApplications, createApplication, getApplication, updateApplication, useSupabase };
+async function deleteApplication(id) {
+  const sb = getSupabase();
+  if (sb) {
+    try {
+      const { error } = await sb.from('applications').delete().eq('id', id);
+      if (error) throw error;
+      return true;
+    } catch (e) { console.warn('Supabase deleteApplication failed, fallback:', e.message); }
+  }
+  const db = loadLocal();
+  const idx = db.applications.findIndex((a) => a.id === id);
+  if (idx === -1) return false;
+  db.applications.splice(idx, 1);
+  saveLocal(db); return true;
+}
+module.exports = { listApplications, createApplication, getApplication, updateApplication, deleteApplication, useSupabase };

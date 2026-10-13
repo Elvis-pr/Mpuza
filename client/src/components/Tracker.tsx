@@ -1,5 +1,5 @@
 import React from 'react';
-import { Application, updateApplication } from '../lib/api';
+import { Application, deleteApplication, updateApplication } from '../lib/api';
 
 const STATUS_COLORS: Record<string, string> = {
   saved: 'var(--color-info-bg)',
@@ -13,12 +13,18 @@ const STATUS_COLORS: Record<string, string> = {
 export interface TrackerProps {
   applications: Application[];
   onChange: () => void;
+  requireAuth?: () => boolean;
+  authed?: boolean;
+  onLogin?: () => void;
 }
 
 const STATUSES = ['saved', 'applied', 'interview', 'offer', 'rejected', 'withdrawn'] as const;
 
-export const Tracker: React.FC<TrackerProps> = ({ applications, onChange }) => {
+export const Tracker: React.FC<TrackerProps> = ({ applications, onChange, requireAuth, authed, onLogin }) => {
   const [filter, setFilter] = React.useState<string>('all');
+  const [editingNotes, setEditingNotes] = React.useState<string | null>(null);
+  const [notesDraft, setNotesDraft] = React.useState('');
+  const [confirmDelete, setConfirmDelete] = React.useState<string | null>(null);
   const counts = React.useMemo(() => {
     const c: Record<string, number> = { all: applications.length };
     for (const s of STATUSES) c[s] = applications.filter((a) => a.status === s).length;
@@ -27,9 +33,39 @@ export const Tracker: React.FC<TrackerProps> = ({ applications, onChange }) => {
   const visible = filter === 'all' ? applications : applications.filter((a) => a.status === filter);
 
   const setStatus = async (id: string, status: string) => {
+    if (requireAuth && !requireAuth()) return;
     await updateApplication(id, { status });
     onChange();
   };
+
+  const saveNotes = async (id: string) => {
+    if (requireAuth && !requireAuth()) return;
+    await updateApplication(id, { notes: notesDraft });
+    setEditingNotes(null);
+    onChange();
+  };
+
+  const remove = async (id: string) => {
+    if (requireAuth && !requireAuth()) return;
+    await deleteApplication(id);
+    setConfirmDelete(null);
+    onChange();
+  };
+
+  if (!authed) {
+    return (
+      <div className="card" style={{ padding: 'var(--space-6)', textAlign: 'center' }}>
+        <div className="empty-state">
+          <div className="empty-icon">🔐</div>
+          <h3>Log in to track applications</h3>
+          <p>Your tracked jobs sync to your account so they follow you across devices.</p>
+          <button className="btn btn-primary btn-sm" style={{ marginTop: 'var(--space-3)' }} onClick={onLogin}>
+            Log in / Sign up
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (!applications.length) {
     return (
@@ -62,11 +98,33 @@ export const Tracker: React.FC<TrackerProps> = ({ applications, onChange }) => {
               </div>
               <span className="badge" style={{ background: STATUS_COLORS[a.status] || 'var(--color-neutral-100)' }}>{a.status}</span>
             </div>
+            {a.notes && editingNotes !== a.id && (
+              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-2)', marginBottom: 0 }}>📝 {a.notes}</p>
+            )}
+            {editingNotes === a.id ? (
+              <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
+                <input value={notesDraft} onChange={(e) => setNotesDraft(e.target.value)} placeholder="Cover note, referral, deadline…" aria-label="Application notes" style={{ fontSize: 'var(--text-sm)' }} />
+                <button className="btn btn-primary btn-sm" onClick={() => saveNotes(a.id)}>Save</button>
+                <button className="btn btn-ghost btn-sm" onClick={() => setEditingNotes(null)}>Cancel</button>
+              </div>
+            ) : null}
             <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap', marginTop: 'var(--space-3)', alignItems: 'center' }}>
               <select value={a.status} onChange={(e) => setStatus(a.id, e.target.value)} style={{ width: 'auto', padding: 'var(--space-2)' }} aria-label="Update status">
                 {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
+              <button className="btn btn-ghost btn-sm" onClick={() => { setEditingNotes(a.id); setNotesDraft(a.notes || ''); }}>
+                {a.notes ? 'Edit note' : 'Add note'}
+              </button>
               {a.snapshot?.url && <a className="btn btn-ghost btn-sm" href={a.snapshot.url} target="_blank" rel="noopener noreferrer">Open listing ↗</a>}
+              {confirmDelete === a.id ? (
+                <span style={{ display: 'inline-flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                  <span style={{ fontSize: 'var(--text-xs)' }}>Withdraw?</span>
+                  <button className="btn btn-primary btn-sm" onClick={() => remove(a.id)}>Yes</button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDelete(null)}>Keep</button>
+                </span>
+              ) : (
+                <button className="btn btn-ghost btn-sm" onClick={() => setConfirmDelete(a.id)}>Withdraw</button>
+              )}
               <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-light)', marginLeft: 'auto' }}>
                 {new Date(a.applied_at).toLocaleDateString()}
               </span>

@@ -13,14 +13,16 @@
 const express = require('express');
 const router = express.Router();
 const store = require('../utils/tracking-store');
+const { resolveProfileId } = require('../utils/auth-middleware');
 
 // GET /api/applications?profileId=...&status=...
 // Permanent on Vercel once Supabase `applications` table exists;
 // otherwise local fallback (dev) so deploy is never blocked.
 router.get('/', async (req, res) => {
   try {
-    const { status, profileId } = req.query;
-    const applications = await store.listApplications({ profileId: profileId || 'local-user', status });
+    const { status } = req.query;
+    const profileId = resolveProfileId(req);
+    const applications = await store.listApplications({ profileId, status });
     res.json({ success: true, applications, persistent: store.useSupabase() });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -31,10 +33,11 @@ router.get('/', async (req, res) => {
 // snapshot = { title, company, location, url, source } so external jobs still render.
 router.post('/', async (req, res) => {
   try {
-    const { opportunity_id, profileId, notes, snapshot } = req.body;
+    const { opportunity_id, notes, snapshot } = req.body;
     if (!opportunity_id) return res.status(400).json({ success: false, message: 'opportunity_id required' });
+    const profileId = resolveProfileId(req);
     const { application, deduped } = await store.createApplication({
-      opportunity_id, profile_id: profileId || 'local-user', notes, snapshot,
+      opportunity_id, profile_id: profileId, notes, snapshot,
     });
     res.status(deduped ? 200 : 201).json({ success: true, application, deduped, persistent: store.useSupabase() });
   } catch (err) {
@@ -64,6 +67,17 @@ router.put('/:id', async (req, res) => {
     const app = await store.updateApplication(req.params.id, { status, notes });
     if (!app) return res.status(404).json({ success: false, message: 'Application not found' });
     res.json({ success: true, application: app });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE /api/applications/:id — withdraw / remove tracking
+router.delete('/:id', async (req, res) => {
+  try {
+    const ok = await store.deleteApplication(req.params.id);
+    if (!ok) return res.status(404).json({ success: false, message: 'Application not found' });
+    res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

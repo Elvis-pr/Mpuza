@@ -18,6 +18,7 @@ const opportunitiesRouter = require('./routes/opportunities');
 const skillsRouter = require('./routes/skills');
 const applicationsRouter = require('./routes/applications');
 const interviewsRouter = require('./routes/interviews');
+const authRouter = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -34,6 +35,9 @@ app.get('/api/health', (req, res) => {
 
 // ===== OPPORTUNITIES (with matching) =====
 app.use('/api/opportunities', opportunitiesRouter);
+
+// ===== AUTH (login / register, works without Supabase Auth) =====
+app.use('/api/auth', authRouter);
 
 // ===== SKILLS =====
 app.use('/api/skills', skillsRouter);

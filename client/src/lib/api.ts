@@ -1,17 +1,41 @@
 import type { CareerResource, OpportunitiesResponse } from '../types';
 
 const API = '/api';
-const PROFILE_ID = 'local-user';
+const TOKEN_KEY = 'mpuza-auth-token';
 
-function profileId(): string {
+function getStoredTokenLocal(): string | null {
+  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+}
+
+function currentProfileId(): string {
+  try {
+    const u = localStorage.getItem('mpuza-auth-user');
+    if (u) {
+      const parsed = JSON.parse(u);
+      if (parsed?.id) return String(parsed.id);
+    }
+  } catch {}
   try {
     let id = localStorage.getItem('mpuza-profile-id');
     if (!id) {
-      id = PROFILE_ID;
+      id = 'guest-' + Math.random().toString(36).slice(2, 10);
       localStorage.setItem('mpuza-profile-id', id);
     }
     return id;
-  } catch { return PROFILE_ID; }
+  } catch { return 'local-user'; }
+}
+
+function authHeaders(): Record<string, string> {
+  const t = getStoredTokenLocal();
+  return t ? { Authorization: `Bearer ${t}` } : {};
+}
+
+/** Call after login/register/logout so api.ts resolves to the right owner. */
+export function setAuthUser(user: { id: string } | null) {
+  try {
+    if (user?.id) localStorage.setItem('mpuza-auth-user', JSON.stringify({ id: user.id }));
+    else localStorage.removeItem('mpuza-auth-user');
+  } catch {}
 }
 
 /**
@@ -76,16 +100,18 @@ export interface Application {
   snapshot?: { title: string; company: string; location: string; url?: string; source?: string } | null;
 }
 
-export async function listApplications(): Promise<{ success: boolean; applications: Application[] }> {
-  const res = await fetch(`${API}/applications?profileId=${encodeURIComponent(profileId())}`);
+export async function listApplications(): Promise<{ success: boolean; applications: Application[]; persistent?: boolean }> {
+  const res = await fetch(`${API}/applications?profileId=${encodeURIComponent(currentProfileId())}`, {
+    headers: { ...authHeaders() },
+  });
   return res.json();
 }
 
 export async function createApplication(opportunityId: string, snapshot?: Application['snapshot'], notes?: string) {
   const res = await fetch(`${API}/applications`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ opportunity_id: opportunityId, profileId: profileId(), snapshot, notes }),
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ opportunity_id: opportunityId, profileId: currentProfileId(), snapshot, notes }),
   });
   return res.json();
 }
@@ -93,11 +119,19 @@ export async function createApplication(opportunityId: string, snapshot?: Applic
 export async function updateApplication(id: string, patch: { status?: string; notes?: string }) {
   const res = await fetch(`${API}/applications/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify(patch),
   });
   return res.json();
 }
 
-export function getProfileId() { return profileId(); }
+export async function deleteApplication(id: string) {
+  const res = await fetch(`${API}/applications/${id}`, {
+    method: 'DELETE',
+    headers: { ...authHeaders() },
+  });
+  return res.json();
+}
+
+export function getProfileId() { return currentProfileId(); }
 

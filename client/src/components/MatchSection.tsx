@@ -1,43 +1,45 @@
 import React from 'react';
 import { Opportunity, OpportunityFilters } from '../types';
 import { JobRegion, matchOpportunities } from '../lib/api';
+import { loadProfile } from './ProfileSection';
 
 export interface MatchSectionProps {
   filters: OpportunityFilters;
   onClose: () => void;
+  onApply?: (opp: Opportunity) => void;
 }
 
-export const MatchSection: React.FC<MatchSectionProps> = ({ filters, onClose }) => {
+interface MatchRow {
+  opportunity: Opportunity;
+  match: { score: number; matchedSkills: string[]; unmatchedRequirements: string[] };
+}
+
+export const MatchSection: React.FC<MatchSectionProps> = ({ filters, onClose, onApply }) => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const [results, setResults] = React.useState<Opportunity[]>([]);
+  const [results, setResults] = React.useState<MatchRow[]>([]);
 
   const run = React.useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const profile = {
-        skills: [
-          { name: 'JavaScript', proficiency: 'Intermediate', category: 'frontend' },
-          { name: 'Python', proficiency: 'Intermediate', category: 'programming' },
-          { name: 'Communication', proficiency: 'Intermediate', category: 'soft-skills' },
-        ],
-        year: 'second-year',
-        location: 'Remote',
-      };
+      const profile = loadProfile();
+      if (!profile.skills.length) { setError('Add at least one skill in My profile first.'); return; }
       const region: JobRegion = filters.region === 'rwanda' ? 'rwanda' : 'all';
-      const data = await matchOpportunities(profile, region);
+      const data = await matchOpportunities({ ...profile, location: profile.location || 'Remote' }, region);
       if (!data.success || !Array.isArray(data.matched)) {
         setError(data.message || 'Could not compute matches.');
         return;
       }
-      setResults(data.matched);
-    } catch (err) {
+      setResults(data.matched.slice(0, 4));
+    } catch {
       setError('Something went wrong while fetching your match.');
     } finally {
       setLoading(false);
     }
   }, [filters]);
+
+  React.useEffect(() => { run(); }, [run]);
 
   return (
     <div className="fade-in-up" style={{ marginBottom: 'var(--space-8)' }}>
@@ -78,12 +80,25 @@ export const MatchSection: React.FC<MatchSectionProps> = ({ filters, onClose }) 
 
         {results.length > 0 && (
           <div style={{ marginTop: 'var(--space-4)' }}>
-            <p style={{ marginBottom: 'var(--space-2)' }}><strong>Your top {results.length} matches</strong></p>
+            <p style={{ marginBottom: 'var(--space-2)' }}><strong>Your top {results.length} matches</strong> — from your profile skills</p>
             <div className="grid" style={{ gap: 'var(--space-3)' }}>
-              {results.slice(0, 4).map((opp) => (
-                <div key={opp.id} className="card" style={{ padding: 'var(--space-3)', cursor: 'pointer' }}>
-                  <div className="card-title" style={{ fontSize: 'var(--text-sm)' }}>{opp.title}</div>
-                  <div className="card-company" style={{ fontSize: 'var(--text-sm)' }}>{opp.company}</div>
+              {results.map(({ opportunity: opp, match }) => (
+                <div key={opp.id} className="card" style={{ padding: 'var(--space-3)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--space-2)', alignItems: 'center' }}>
+                    <div className="card-title" style={{ fontSize: 'var(--text-sm)' }}>{opp.title}</div>
+                    <span className="badge" style={{ background: 'var(--color-success-bg)', color: '#047857' }}>{Math.round(match?.score || 0)}% fit</span>
+                  </div>
+                  <div className="card-company" style={{ fontSize: 'var(--text-sm)' }}>{opp.company} · {opp.location}</div>
+                  {!!match?.matchedSkills?.length && (
+                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', marginTop: 4 }}>
+                      ✓ {match.matchedSkills.slice(0, 3).join(', ')}
+                    </div>
+                  )}
+                  {onApply && (
+                    <div style={{ marginTop: 'var(--space-2)' }}>
+                      <button className="btn btn-primary btn-sm" onClick={() => onApply(opp)}>Apply</button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

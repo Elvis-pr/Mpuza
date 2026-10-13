@@ -1,9 +1,11 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { Button } from './Button';
 import { Logo } from './Logo';
+import { useAuth } from '../lib/auth';
+import { AuthModal } from './AuthModal';
 
 /**
- * Navbar with the signature MPUZA "Ascend M" brand mark.
+ * Navbar with the signature MPUZA "Ascend M" brand mark + auth state.
  */
 
 const Brand = () => (
@@ -23,14 +25,22 @@ const navItems = [
 
 export const Navbar: React.FC = () => {
   const [active, setActive] = useState(navItems[0].section);
+  const { user, logout } = useAuth();
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
 
-  const handleNavigate = (e: FormEvent<HTMLAnchorElement>, section: string) => {
+  const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>, section: string) => {
     e.preventDefault();
     setActive(section);
     const el = document.getElementById(section);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  const openAuth = (mode: 'login' | 'register') => {
+    setAuthMode(mode);
+    setAuthOpen(true);
   };
 
   return (
@@ -63,9 +73,34 @@ export const Navbar: React.FC = () => {
 
       <div style={{ flex: 1 }} />
 
-      <Button variant="primary" size="sm">
-        Get Started
-      </Button>
+      {user ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+          <span
+            title={user.email}
+            style={{
+              fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-text)',
+              background: 'var(--color-primary-50)', border: '2px solid var(--color-border)',
+              borderRadius: 'var(--radius-full)', padding: 'var(--space-1) var(--space-3)',
+              maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}
+          >
+            👋 {user.name}
+          </span>
+          <Button variant="ghost" size="sm" onClick={() => logout()}>
+            Log out
+          </Button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+          <Button variant="ghost" size="sm" onClick={() => openAuth('login')}>
+            Log in
+          </Button>
+          <Button variant="primary" size="sm" onClick={() => openAuth('register')}>
+            Get Started
+          </Button>
+        </div>
+      )}
+      <AuthModal open={authOpen} initialMode={authMode} onClose={() => setAuthOpen(false)} />
     </header>
   );
 };
