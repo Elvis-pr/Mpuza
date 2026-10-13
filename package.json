@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node server/index.js",
-    "build": "npm --prefix client install && npm --prefix client run build",
-    "vercel-build": "npm --prefix client install && npm --prefix client run build",
+    "build": "npm --prefix client run build",
+    "vercel-build": "npm --prefix client run build",
     "seed": "node server/supabase-seed.js",
     "migrate": "node server/migrate.js"
   },
