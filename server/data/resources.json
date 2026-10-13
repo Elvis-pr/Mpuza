@@ -1,14 +1,14 @@
 {
   "resources": [
-    { "id": "res-1", "name": "LinkedIn", "url": "https://linkedin.com", "category": "Networking", "icon": "💼" },
-    { "id": "res-2", "name": "Indeed", "url": "https://indeed.com", "category": "Job Search", "icon": "🔍" },
-    { "id": "res-3", "name": "Glassdoor", "url": "https://glassdoor.com", "category": "Reviews & Salaries", "icon": "📊" },
+    { "id": "res-1", "name": "LinkedIn", "url": "https://linkedin.com", "category": "Networking", "icon": "🤝" },
+    { "id": "res-2", "name": "Indeed", "url": "https://indeed.com", "category": "Job Search", "icon": "🧭" },
+    { "id": "res-3", "name": "Glassdoor", "url": "https://glassdoor.com", "category": "Reviews & Salaries", "icon": "🪞" },
     { "id": "res-4", "name": "GradConnection", "url": "https://gradconnection.com", "category": "Grad Jobs", "icon": "🎓" },
-    { "id": "res-5", "name": "Skillshare", "url": "https://skillshare.com", "category": "Learning", "icon": "📚" },
-    { "id": "res-6", "name": "Coursera", "url": "https://coursera.org", "category": "Learning", "icon": "📚" },
-    { "id": "res-7", "name": "LeetCode", "url": "https://leetcode.com", "category": "Coding Practice", "icon": "💻" },
-    { "id": "res-8", "name": "GitHub", "url": "https://github.com", "category": "Development", "icon": "💻" },
+    { "id": "res-5", "name": "Skillshare", "url": "https://skillshare.com", "category": "Learning", "icon": "🎨" },
+    { "id": "res-6", "name": "Coursera", "url": "https://coursera.org", "category": "Learning", "icon": "📖" },
+    { "id": "res-7", "name": "LeetCode", "url": "https://leetcode.com", "category": "Coding Practice", "icon": "🧩" },
+    { "id": "res-8", "name": "GitHub", "url": "https://github.com", "category": "Development", "icon": "🐙" },
     { "id": "res-9", "name": "Wellfound", "url": "https://wellfound.com", "category": "Startups", "icon": "🚀" },
-    { "id": "res-10", "name": "Seek", "url": "https://seek.com.au", "category": "Job Search", "icon": "🔍" }
+    { "id": "res-10", "name": "Seek", "url": "https://seek.com.au", "category": "Job Search", "icon": "🔎" }
   ]
 }

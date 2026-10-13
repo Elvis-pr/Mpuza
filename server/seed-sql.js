@@ -84,16 +84,16 @@ ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO career_resources (name, url, category, icon, active)
 VALUES
-  ('LinkedIn', 'https://linkedin.com', 'Networking', '💼', true),
-  ('Indeed', 'https://indeed.com', 'Job Search', '🔍', true),
-  ('Glassdoor', 'https://glassdoor.com', 'Reviews & Salaries', '📊', true),
+  ('LinkedIn', 'https://linkedin.com', 'Networking', '🤝', true),
+  ('Indeed', 'https://indeed.com', 'Job Search', '🧭', true),
+  ('Glassdoor', 'https://glassdoor.com', 'Reviews & Salaries', '🪞', true),
   ('GradConnection', 'https://gradconnection.com', 'Grad Jobs', '🎓', true),
-  ('Skillshare', 'https://skillshare.com', 'Learning', '📚', true),
-  ('Coursera', 'https://coursera.org', 'Learning', '📚', true),
-  ('LeetCode', 'https://leetcode.com', 'Coding Practice', '💻', true),
-  ('GitHub', 'https://github.com', 'Development', '💻', true),
+  ('Skillshare', 'https://skillshare.com', 'Learning', '🎨', true),
+  ('Coursera', 'https://coursera.org', 'Learning', '📖', true),
+  ('LeetCode', 'https://leetcode.com', 'Coding Practice', '🧩', true),
+  ('GitHub', 'https://github.com', 'Development', '🐙', true),
   ('AngelList (Wellfound)', 'https://wellfound.com', 'Startups', '🚀', true),
-  ('Seek', 'https://seek.com.au', 'Job Search', '🔍', true)
+  ('Seek', 'https://seek.com.au', 'Job Search', '🔎', true)
 ON CONFLICT (name) DO NOTHING;
 
 -- ==================== APPLICATIONS TABLE (permanent tracking, Vercel-safe) ====================
