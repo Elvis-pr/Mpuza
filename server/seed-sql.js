@@ -50,7 +50,8 @@ CREATE TABLE IF NOT EXISTS career_resources (
   created_at      timestamp with time zone DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_resources_name  ON career_resources(name);
+-- Unique on name so ON CONFLICT (name) DO NOTHING dedupes on re-runs
+CREATE UNIQUE INDEX IF NOT EXISTS uq_resources_name ON career_resources(name);
 CREATE INDEX IF NOT EXISTS idx_resources_category ON career_resources(category);
 
 -- ==================== SEED OPPORTUNITIES ====================
