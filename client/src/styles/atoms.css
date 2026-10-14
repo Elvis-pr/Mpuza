@@ -44,3 +44,109 @@
 @keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes scale-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+
+/* ---- Brand mark: Connection Spark pulse (fires on navbar/footer hover) ---- */
+.mpuza-spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mpuza-spark-idle 3.4s ease-in-out infinite;
+}
+.nav-brand:hover .mpuza-spark,
+.footer-brand:hover .mpuza-spark {
+  animation: mpuza-spark-idle 0.7s ease-in-out infinite;
+}
+@keyframes mpuza-spark-idle {
+  0%, 100% { opacity: 0.92; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mpuza-spark, .nav-brand:hover .mpuza-spark, .footer-brand:hover .mpuza-spark { animation: none; }
+}
+
+/* ---- Splash: the "connect me" opening story ---- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700) 55%, var(--color-secondary-600));
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+}
+.splash-leaving { opacity: 0; transform: scale(1.04); pointer-events: none; }
+
+.splash-stage { display: flex; flex-direction: column; align-items: center; }
+.splash-scene { width: min(78vw, 420px); height: auto; display: block; }
+
+.splash-person { opacity: 0; }
+.splash-person-left { animation: splash-slide-left 0.7s var(--ease-out-expo) 0.15s forwards; }
+.splash-person-right { animation: splash-slide-right 0.7s var(--ease-out-expo) 0.3s forwards; }
+@keyframes splash-slide-left { from { opacity: 0; transform: translateX(-56px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes splash-slide-right { from { opacity: 0; transform: translateX(56px); } to { opacity: 1; transform: translateX(0); } }
+
+.splash-link {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: splash-draw 0.7s var(--ease-out-expo) 0.95s forwards;
+}
+@keyframes splash-draw { to { stroke-dashoffset: 0; } }
+
+.splash-spark, .splash-spark-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+.splash-spark { animation: splash-spark-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s forwards; }
+.splash-spark-glow { animation: splash-glow-fade 0.6s ease-out 1.5s forwards; }
+@keyframes splash-spark-pop {
+  0% { opacity: 0; transform: scale(0.2) rotate(-24deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes splash-glow-fade { from { opacity: 0; } to { opacity: 0.85; } }
+
+.splash-word {
+  margin-top: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: white;
+  opacity: 0;
+  animation: splash-rise 0.55s var(--ease-out-expo) 1.9s forwards;
+}
+.splash-word-dot { color: var(--color-primary-300); }
+.splash-tagline {
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  color: var(--color-secondary-200);
+  opacity: 0;
+  animation: splash-rise 0.55s var(--ease-out-expo) 2.1s forwards;
+}
+@keyframes splash-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.splash-skip {
+  position: absolute;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgb(255 255 255 / 0.85);
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out-expo);
+}
+.splash-skip:hover { background: rgb(255 255 255 / 0.24); }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash { display: none; }
+}

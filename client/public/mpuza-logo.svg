@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-label="MPUZA — Campus to Career">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-label="MPUZA — connect me. Campus to Career">
   <defs>
     <linearGradient id="mpuzaHGrad" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#FFB25A"/>
@@ -6,17 +6,25 @@
       <stop offset="0.78" stop-color="#C2410C"/>
       <stop offset="1" stop-color="#0F766E"/>
     </linearGradient>
+    <radialGradient id="mpuzaHSparkGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFF7ED" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#FFF7ED" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <!-- Mark -->
+  <!-- Mark: "Connect Me" M — two link nodes + connection spark, scaled from the 96px master -->
   <g>
     <rect x="2" y="6" width="52" height="52" rx="15.5" fill="url(#mpuzaHGrad)"/>
     <rect x="2.75" y="6.75" width="50.5" height="50.5" rx="14.8" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.2"/>
-    <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 48 L12 20 L22.5 33.5 L32 18.5 L43 18.5" stroke-width="5.2"/>
-      <path d="M37 13.5 L43.4 18.7 L37.6 24.2" stroke-width="4"/>
+    <g transform="translate(2,6) scale(0.5417)">
+      <path d="M22 69 L22 30 L40 52 L58 28 L74 28" fill="none" stroke="#FFFFFF" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="22" cy="20" r="4.6" fill="#FFF7ED"/>
+      <path d="M15.8 31.2 C15.8 26.2 18.4 23.6 22 23.6 C25.6 23.6 28.2 26.2 28.2 31.2 Z" fill="#FFF7ED"/>
+      <circle cx="74" cy="17.5" r="4.6" fill="#FFF7ED"/>
+      <path d="M67.8 28.7 C67.8 23.7 70.4 21.1 74 21.1 C77.6 21.1 80.2 23.7 80.2 28.7 Z" fill="#FFF7ED"/>
+      <circle cx="40" cy="34" r="11" fill="url(#mpuzaHSparkGlow)"/>
+      <path d="M40 26.5 C41.4 31.3 44.7 34.6 49.5 36 C44.7 37.4 41.4 40.7 40 45.5 C38.6 40.7 35.3 37.4 30.5 36 C35.3 34.6 38.6 31.3 40 26.5 Z" fill="#FFF7ED"/>
+      <path d="M22 69 Q48 79 74 58" fill="none" stroke="#5EEAD4" stroke-width="3.5" stroke-linecap="round" opacity="0.9"/>
     </g>
-    <circle cx="22.4" cy="22.4" r="3.1" fill="#FFF7ED"/>
-    <path d="M12 48 Q29 54 44 43.5" fill="none" stroke="#5EEAD4" stroke-width="2.2" stroke-linecap="round" opacity="0.9"/>
   </g>
   <!-- Wordmark -->
   <g font-family="Inter, Plus Jakarta Sans, Segoe UI, system-ui, sans-serif">
@@ -25,3 +33,4 @@
     <text x="64" y="52" font-size="9.5" font-weight="700" letter-spacing="2.4" fill="#0F766E">CAMPUS TO CAREER</text>
   </g>
 </svg>
+

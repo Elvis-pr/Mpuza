@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MPUZA favicon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MPUZA favicon — connect me">
   <defs>
     <linearGradient id="mpuzaFavGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#FFB25A"/>
@@ -8,10 +8,17 @@
     </linearGradient>
   </defs>
   <rect x="1" y="1" width="62" height="62" rx="17" fill="url(#mpuzaFavGrad)"/>
-  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M13 47 L13 19 L27 36 L39 17.5 L50 17.5" stroke-width="6.5"/>
-    <path d="M43 12 L50.5 17.7 L44 23.6" stroke-width="4.6"/>
-  </g>
-  <circle cx="27" cy="21.5" r="3.6" fill="#FFF7ED"/>
-  <path d="M13 47 Q33 54 51 41" fill="none" stroke="#5EEAD4" stroke-width="2.6" stroke-linecap="round" opacity="0.95"/>
+  <!-- "Connect Me" M -->
+  <path d="M14 46 L14 19 L26 34 L38 17.5 L49 17.5" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Person 1 (you) -->
+  <circle cx="14" cy="12.5" r="3.1" fill="#FFF7ED"/>
+  <path d="M9.8 20.3 C9.8 16.9 11.6 15.1 14 15.1 C16.4 15.1 18.2 16.9 18.2 20.3 Z" fill="#FFF7ED"/>
+  <!-- Person 2 (your opportunity) -->
+  <circle cx="49" cy="11" r="3.1" fill="#FFF7ED"/>
+  <path d="M44.8 18.8 C44.8 15.4 46.6 13.6 49 13.6 C51.4 13.6 53.2 15.4 53.2 18.8 Z" fill="#FFF7ED"/>
+  <!-- Connection Spark -->
+  <path d="M26 13.5 C27 16.8 29.2 19 32.5 20 C29.2 21 27 23.2 26 26.5 C25 23.2 22.8 21 19.5 20 C22.8 19 25 16.8 26 13.5 Z" fill="#FFF7ED"/>
+  <!-- Link line -->
+  <path d="M14 46 Q32 53 49 39" fill="none" stroke="#5EEAD4" stroke-width="2.6" stroke-linecap="round" opacity="0.95"/>
 </svg>
+

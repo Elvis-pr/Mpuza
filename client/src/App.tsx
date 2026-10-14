@@ -3,11 +3,13 @@ import { Hero } from './components/Hero';
 import { OpportunitySection } from './components/OpportunitySection';
 import { ResourceSection } from './components/ResourceSection';
 import { Footer } from './components/Footer';
+import { Splash } from './components/Splash';
 import { AuthProvider } from './lib/auth';
 
 export default function App() {
   return (
     <AuthProvider>
+      <Splash />
       <div className="app">
         <Navbar />
         <main>
