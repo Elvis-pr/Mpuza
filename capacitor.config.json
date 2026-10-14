@@ -1,0 +1,6 @@
+{
+  "appId": "com.mpuza.app",
+  "appName": "MPUZA",
+  "webDir": "client/dist",
+  "backgroundColor": "#c2410c"
+}

@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { setAuthUser } from './api';
+import { API_BASE, setAuthUser } from './api';
 
 export interface AuthUser {
   id: string;
@@ -29,7 +29,7 @@ const AuthContext = createContext<AuthContextValue>({
 const TOKEN_KEY = 'mpuza-auth-token';
 
 async function api(path: string, opts: RequestInit = {}) {
-  const res = await fetch(`/api/auth${path}`, {
+  const res = await fetch(`${API_BASE}/auth${path}`, {
     ...opts,
     headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
   });

@@ -1,6 +1,18 @@
 import type { CareerResource, OpportunitiesResponse } from '../types';
+import { Capacitor } from '@capacitor/core';
 
-const API = '/api';
+/**
+ * API base URL resolution:
+ *  - Web (vercel.app / custom domain): relative '/api' — same-origin, no CORS needed.
+ *  - Native app (Android/iOS via Capacitor): the shell loads from capacitor://localhost,
+ *    so '/api' would go nowhere. Point at the deployed Vercel backend instead.
+ *    Set VITE_API_BASE at app-build time (npm run build:app), e.g.
+ *    VITE_API_BASE=https://mpuza.vercel.app/api
+ */
+export const API_BASE = Capacitor.isNativePlatform()
+  ? (import.meta.env.VITE_API_BASE ?? 'https://mpuza.vercel.app/api')
+  : '/api';
+const API = API_BASE;
 const TOKEN_KEY = 'mpuza-auth-token';
 
 function getStoredTokenLocal(): string | null {

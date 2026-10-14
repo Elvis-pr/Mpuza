@@ -8,6 +8,10 @@
     "dev": "node server/index.js",
     "build": "npm --prefix client run build",
     "vercel-build": "npm --prefix client run build",
+    "build:app": "cd client && VITE_API_BASE=${VITE_API_BASE:-https://mpuza.vercel.app/api} npm run build",
+    "app:sync": "npm run build:app && npx cap sync",
+    "app:android": "npm run app:sync && npx cap open android",
+    "app:ios": "npm run app:sync && npx cap open ios",
     "seed": "node server/supabase-seed.js",
     "migrate": "node server/migrate.js"
   },
@@ -24,10 +28,18 @@
   },
   "homepage": "https://github.com/Elvis-pr/Mpuza#readme",
   "dependencies": {
+    "@capacitor/core": "^8.5.3",
     "@supabase/supabase-js": "^2.117.3",
     "cors": "^2.8.6",
     "dotenv": "^18.0.7",
     "express": "^5.3.0",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/ios": "^8.5.3",
+    "typescript": "^7.0.2"
   }
 }
