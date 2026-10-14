@@ -15,10 +15,10 @@ CREATE TABLE IF NOT EXISTS opportunities (
   created_at      timestamp with time zone DEFAULT NOW()
 );
 
-CREATE INDEX idx_opportunities_id    ON opportunities(id);
-CREATE INDEX idx_opportunities_type  ON opportunities(type);
-CREATE INDEX idx_opportunities_company ON opportunities(company);
-CREATE INDEX idx_opportunities_title ON opportunities(title);
+CREATE INDEX IF NOT EXISTS idx_opportunities_id    ON opportunities(id);
+CREATE INDEX IF NOT EXISTS idx_opportunities_type  ON opportunities(type);
+CREATE INDEX IF NOT EXISTS idx_opportunities_company ON opportunities(company);
+CREATE INDEX IF NOT EXISTS idx_opportunities_title ON opportunities(title);
 
 -- ==================== CAREER RESOURCES TABLE ====================
 
@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS career_resources (
   created_at      timestamp with time zone DEFAULT NOW()
 );
 
-CREATE INDEX idx_resources_name  ON career_resources(name);
-CREATE INDEX idx_resources_category ON career_resources(category);
+CREATE INDEX IF NOT EXISTS idx_resources_name  ON career_resources(name);
+CREATE INDEX IF NOT EXISTS idx_resources_category ON career_resources(category);
 
 -- ==================== SEED OPPORTUNITIES ====================
 
@@ -41,23 +41,23 @@ CREATE INDEX idx_resources_category ON career_resources(category);
 INSERT INTO opportunities (id, title, company, type, location, description, requirements, pay, deadline, posted_at)
 VALUES
   -- --- INTERNSHIPS ---
-  ('opp-1', 'Software Engineering Intern', 'TechCorp', 'internship', 'Remote',
+  ('00000000-0000-4000-8000-000000000001', 'Software Engineering Intern', 'TechCorp', 'internship', 'Remote',
     'Build full-stack features for a growing SaaS platform. Work with Node.js, React, and cloud services.',
     ARRAY['1+ years programming','JavaScript/TypeScript','React or Node.js']::text[], '$20-25/hr', '2026-03-01', '2026-01-15'),
-  ('opp-2', 'Data Science Intern', 'DataWorks', 'internship', 'Sydney',
+  ('00000000-0000-4000-8000-000000000002', 'Data Science Intern', 'DataWorks', 'internship', 'Sydney',
     'Analyze large datasets and build predictive models using Python, SQL, and ML libraries.',
     ARRAY['Python','SQL','Statistics','Machine Learning basics']::text[], '$30/hr', '2026-02-28', '2026-01-10'),
-  ('opp-3', 'Marketing Intern', 'Brandify', 'internship', 'Melbourne',
+  ('00000000-0000-4000-8000-000000000003', 'Marketing Intern', 'Brandify', 'internship', 'Melbourne',
     'Support digital marketing campaigns, social media, and market research for client brands.',
     ARRAY['Communication skills','Social media familiarity','Aspiring marketers']::text[], '$22/hr', '2026-03-15', '2026-01-05'),
   -- --- FULL-TIME JOBS ---
-  ('opp-4', 'Junior Software Developer', 'Cloudify', 'fulltime', 'Remote',
+  ('00000000-0000-4000-8000-000000000004', 'Junior Software Developer', 'Cloudify', 'fulltime', 'Remote',
     'Help scale a cloud infrastructure platform. Write clean, maintainable code and collaborate with a distributed team.',
     ARRAY['React/Node.js','REST APIs','Git','Problem solving']::text[], '$100k-130k', '2026-04-01', '2026-01-20'),
-  ('opp-5', 'UX/UI Designer', 'DesignHub', 'fulltime', 'Brisbane',
+  ('00000000-0000-4000-8000-000000000005', 'UX/UI Designer', 'DesignHub', 'fulltime', 'Brisbane',
     'Design user-centered experiences for a design-tech startup. Create wireframes, prototypes, and design systems.',
     ARRAY['Figma','User research','Prototyping','Portofolio required']::text[], '$90k-110k', '2026-03-30', '2026-01-18'),
-  ('opp-6', 'Financial Analyst', 'FinEdge', 'fulltime', 'Adelaide',
+  ('00000000-0000-4000-8000-000000000006', 'Financial Analyst', 'FinEdge', 'fulltime', 'Adelaide',
     'Perform financial analysis, build models, and support investment decision-making for a mid-sized firm.',
     ARRAY['Finance degree','Excel/Models','Attention to detail']::text[], '$85k-100k', '2026-02-20', '2026-01-12')
 ON CONFLICT (id) DO NOTHING;
