@@ -98,6 +98,12 @@ export interface Application {
   updated_at?: string;
   notes?: string;
   snapshot?: { title: string; company: string; location: string; url?: string; source?: string } | null;
+  applicant_name?: string;
+  applicant_email?: string;
+  applicant_phone?: string;
+  cover_letter?: string;
+  cv_path?: string | null;
+  cv_filename?: string | null;
 }
 
 export async function listApplications(): Promise<{ success: boolean; applications: Application[]; persistent?: boolean }> {
@@ -107,13 +113,33 @@ export async function listApplications(): Promise<{ success: boolean; applicatio
   return res.json();
 }
 
-export async function createApplication(opportunityId: string, snapshot?: Application['snapshot'], notes?: string) {
+export async function createApplication(
+  opportunityId: string,
+  snapshot?: Application['snapshot'],
+  notes?: string,
+  package_?: {
+    applicant: { name: string; email: string; phone?: string };
+    cover_letter?: string;
+    cv?: { filename: string; data_base64: string };
+  },
+) {
   const res = await fetch(`${API}/applications`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ opportunity_id: opportunityId, profileId: currentProfileId(), snapshot, notes }),
+    body: JSON.stringify({
+      opportunity_id: opportunityId,
+      profileId: currentProfileId(),
+      snapshot,
+      notes,
+      ...(package_ || {}),
+    }),
   });
   return res.json();
+}
+
+/** Direct download of a submitted CV (opens in a new tab). */
+export function cvDownloadUrl(applicationId: string) {
+  return `${API}/applications/${encodeURIComponent(applicationId)}/cv`;
 }
 
 export async function updateApplication(id: string, patch: { status?: string; notes?: string }) {

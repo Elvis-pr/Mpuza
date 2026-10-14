@@ -1,5 +1,5 @@
 import React from 'react';
-import { Application, deleteApplication, updateApplication } from '../lib/api';
+import { Application, cvDownloadUrl, deleteApplication, updateApplication } from '../lib/api';
 
 const STATUS_COLORS: Record<string, string> = {
   saved: 'var(--color-info-bg)',
@@ -98,6 +98,24 @@ export const Tracker: React.FC<TrackerProps> = ({ applications, onChange, requir
               </div>
               <span className="badge" style={{ background: STATUS_COLORS[a.status] || 'var(--color-neutral-100)' }}>{a.status}</span>
             </div>
+            {a.applicant_name && !a.notes && (
+              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-2)', marginBottom: 0 }}>
+                👤 {a.applicant_name}{a.applicant_email ? ` · ${a.applicant_email}` : ''}{a.applicant_phone ? ` · ${a.applicant_phone}` : ''}
+              </p>
+            )}
+            {a.cv_filename && (
+              <div style={{ marginTop: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
+                <a href={cvDownloadUrl(a.id)} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary-600)', fontWeight: 600 }}>
+                  📎 {a.cv_filename} — view CV
+                </a>
+              </div>
+            )}
+            {a.cover_letter && (
+              <details style={{ marginTop: 'var(--space-2)' }}>
+                <summary style={{ fontSize: 'var(--text-sm)', cursor: 'pointer', color: 'var(--color-text-secondary)' }}>✉️ Cover letter</summary>
+                <p style={{ fontSize: 'var(--text-sm)', whiteSpace: 'pre-wrap', marginTop: 'var(--space-2)', marginBottom: 0, color: 'var(--color-text-secondary)' }}>{a.cover_letter}</p>
+              </details>
+            )}
             {a.notes && editingNotes !== a.id && (
               <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-2)', marginBottom: 0 }}>📝 {a.notes}</p>
             )}

@@ -17,6 +17,7 @@ server/.env
 
 # Tracking data (local dev only)
 server/data/tracking.json
+server/data/uploads/
 
 # Logs
 *.log

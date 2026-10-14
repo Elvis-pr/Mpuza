@@ -8,6 +8,7 @@ import { ProfileSection } from './ProfileSection';
 import { JobDetailModal } from './JobDetailModal';
 import { Tracker } from './Tracker';
 import { Toast } from './Toast';
+import { ApplyModal } from './ApplyModal';
 import { useAuth } from '../lib/auth';
 import { AuthModal } from './AuthModal';
 
@@ -26,6 +27,7 @@ export const OpportunitySection: React.FC<OpportunitySectionProps> = () => {
   const [error, setError] = useState<string|null>(null);
   const [showMatch, setShowMatch] = useState(false);
   const [detail, setDetail] = useState<Opportunity|null>(null);
+  const [applyFor, setApplyFor] = useState<Opportunity|null>(null);
   const [apps, setApps] = useState<Application[]>([]);
   const [toast, setToast] = useState<string|null>(null);
   const [tab, setTab] = useState<'browse'|'tracked'>('browse');
@@ -59,15 +61,12 @@ export const OpportunitySection: React.FC<OpportunitySectionProps> = () => {
     setToast('Log in or create an account to track jobs across devices.');
     return false;
   }, [user]);
-  const handleApply = useCallback(async (opp:Opportunity)=>{
+  const handleApply = useCallback((opp:Opportunity)=>{
     if (!requireAuth()) return;
-    try {
-      const res = await createApplication(opp.id, snapshotOf(opp));
-      await refreshApps();
-      if (opp.external && opp.url) { setToast(res.deduped?'Already tracked - opening employer site.':'Tracked! Opening employer site to finish applying.'); window.open(opp.url,'_blank','noopener noreferrer'); }
-      else { setToast(res.deduped?'Already in My Applications.':'Application tracked in My Applications!'); }
-    } catch { setToast('Could not track right now - try again.'); }
-  },[refreshApps, requireAuth]);
+    // Open the real application form (details + cover letter + CV)
+    setDetail(null);
+    setApplyFor(opp);
+  },[requireAuth]);
   const handleSave = useCallback(async (opp:Opportunity)=>{
     if (!requireAuth()) return;
     try {
@@ -99,6 +98,7 @@ export const OpportunitySection: React.FC<OpportunitySectionProps> = () => {
         {loading ? (<div className="card" style={{padding:'var(--space-5)',marginTop:'var(--space-4)'}}><div className="skeleton" style={{height:'16px',width:'100%'}} /><div className="skeleton" style={{height:'16px',width:'100%',marginTop:'var(--space-3)'}} /></div>) : error ? (<div className="card" style={{padding:'var(--space-5)',textAlign:'center',marginTop:'var(--space-4)'}}><p>{error}</p></div>) : allOpps.length===0 ? (<div className="card" style={{padding:'var(--space-5)',textAlign:'center',marginTop:'var(--space-4)'}}><h3>No opportunities found</h3><p>Try a different search or filter.</p></div>) : (<div className="grid grid-auto" style={{marginTop:'var(--space-4)'}}>{allOpps.map(opp=>(<OpportunityCard key={opp.id} opportunity={opp} applied={appliedIds.has(opp.id)} saved={savedIds.has(opp.id)} onApply={handleApply} onSave={handleSave} onDetails={setDetail} />))}</div>)}
       </>)}
       <JobDetailModal job={detail} applied={detail?appliedIds.has(detail.id):false} onClose={()=>setDetail(null)} onApply={handleApply} />
+      <ApplyModal job={applyFor} onClose={()=>setApplyFor(null)} onSubmitted={()=>{ refreshApps(); setToast('Application submitted — CV and details saved to My Applications!'); }} />
       <AuthModal open={authOpen} initialMode="register" onClose={() => setAuthOpen(false)} onSuccess={() => { refreshApps(); setToast('Welcome! Your applications now sync to your account.'); }} />
       {toast && <Toast message={toast} type="success" onDismiss={()=>setToast(null)} />}
     </div>

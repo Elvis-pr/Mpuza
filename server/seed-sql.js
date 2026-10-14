@@ -137,6 +137,31 @@ CREATE TRIGGER trg_applications_updated_at
   BEFORE UPDATE ON applications
   FOR EACH ROW EXECUTE FUNCTION set_applications_updated_at();
 
+-- ==================== APPLICANT DETAILS + CV STORAGE ====================
+-- Real application packages: who applied, their message, and their CV.
+
+ALTER TABLE applications ADD COLUMN IF NOT EXISTS applicant_name  text DEFAULT '';
+ALTER TABLE applications ADD COLUMN IF NOT EXISTS applicant_email text DEFAULT '';
+ALTER TABLE applications ADD COLUMN IF NOT EXISTS applicant_phone text DEFAULT '';
+ALTER TABLE applications ADD COLUMN IF NOT EXISTS cover_letter    text DEFAULT '';
+ALTER TABLE applications ADD COLUMN IF NOT EXISTS cv_path         text;
+ALTER TABLE applications ADD COLUMN IF NOT EXISTS cv_filename     text;
+
+-- Private bucket for uploaded CVs. The server uploads with the anon key and
+-- serves downloads through GET /api/applications/:id/cv as signed URLs, so
+-- files are never directly public.
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('application-docs', 'application-docs', false)
+ON CONFLICT (id) DO NOTHING;
+
+DROP POLICY IF EXISTS "anon upload application-docs" ON storage.objects;
+CREATE POLICY "anon upload application-docs" ON storage.objects
+  FOR INSERT TO anon WITH CHECK (bucket_id = 'application-docs');
+
+DROP POLICY IF EXISTS "anon read application-docs" ON storage.objects;
+CREATE POLICY "anon read application-docs" ON storage.objects
+  FOR SELECT TO anon USING (bucket_id = 'application-docs');
+
 -- ==================== AUTH TABLES: USERS + SESSIONS (persistent login on Vercel) ====================
 
 -- Without these, auth falls back to per-instance memory on Vercel (users vanish
