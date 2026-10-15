@@ -20,7 +20,9 @@ const path = require('path');
 dotenv.config({ path: path.join(__dirname, '.env') });
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+// Support both key names: legacy SUPABASE_ANON_KEY and the newer
+// SUPABASE_PUBLISHABLE_KEY label used by Supabase's dashboard.
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
 
 // Check if Supabase is configured
 const isSupabaseConfigured = supabaseUrl && supabaseAnonKey && supabaseUrl !== 'your-project-id.supabase.co' && supabaseAnonKey !== 'your-anon-key-here';

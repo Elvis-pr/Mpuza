@@ -77,7 +77,7 @@ async function withSignedUrls(sb, rows) {
 // Supabase Realtime (presence + broadcast) and direct Storage uploads.
 router.get('/config', (req, res) => {
   const url = process.env.SUPABASE_URL || '';
-  const anonKey = process.env.SUPABASE_ANON_KEY || '';
+  const anonKey = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || '';
   const looksPlaceholder =
     !url || !anonKey ||
     url.includes('your-project-id') || anonKey.includes('your-anon-key') ||
