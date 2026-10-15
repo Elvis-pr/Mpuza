@@ -197,6 +197,47 @@ ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "public all" ON sessions;
 CREATE POLICY "public all" ON sessions FOR ALL USING (true) WITH CHECK (true);
 
+-- ==================== CHAT: MESSAGES (Connect suite) ====================
+-- Real-time 1:1 chat with voice notes and video messages. Rows are written
+-- by the server (/api/connect). Live delivery uses Supabase Realtime
+-- broadcast; this table is the durable history + unread tracking.
+
+CREATE TABLE IF NOT EXISTS messages (
+  id              text PRIMARY KEY,
+  sender_id       text NOT NULL,
+  sender_name     text,
+  recipient_id    text NOT NULL,
+  kind            text NOT NULL DEFAULT 'text',  -- text | voice | video | image
+  body            text,
+  media_path      text,                          -- chat/<userId>/<file> in storage
+  media_mime      text,
+  duration_ms     integer,
+  read_at         timestamp with time zone,
+  created_at      timestamp with time zone DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_messages_pair ON messages (sender_id, recipient_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_messages_recipient_unread ON messages (recipient_id, read_at);
+
+ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "public all" ON messages;
+CREATE POLICY "public all" ON messages FOR ALL USING (true) WITH CHECK (true);
+
+-- Live chat: broadcast messages on INSERT so every online client receives
+-- them instantly (used as a secondary delivery path next to client broadcast).
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime' AND schemaname = 'public' AND tablename = 'messages'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.messages;
+  END IF;
+EXCEPTION WHEN undefined_object THEN
+  -- Publication not present on this project — realtime broadcast still works.
+  NULL;
+END $$;
+
 -- ==================== VERIFY SEED ====================
 
 -- Count opportunities
@@ -208,7 +249,9 @@ SELECT 'applications' AS table_name, COUNT(*) FROM applications
 UNION ALL
 SELECT 'users' AS table_name, COUNT(*) FROM users
 UNION ALL
-SELECT 'sessions' AS table_name, COUNT(*) FROM sessions;
+SELECT 'sessions' AS table_name, COUNT(*) FROM sessions
+UNION ALL
+SELECT 'messages' AS table_name, COUNT(*) FROM messages;
 `;
 
 module.exports = SEED_SQL;

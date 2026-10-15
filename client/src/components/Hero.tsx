@@ -21,6 +21,14 @@ const steps = [
   { icon: '🚀', title: 'Go get it', desc: 'Apply, prepare for interviews, and grow into the role you deserve.' },
 ];
 
+/** What makes Mpuza different from ordinary job boards. */
+const whyItems = [
+  { icon: '💬', title: 'Real-time chat', desc: 'Message recruiters and peers instantly — no email ping-pong.' },
+  { icon: '🎙️', title: 'Voice & video notes', desc: 'Say more than text allows: send voice notes and video intros right in the chat.' },
+  { icon: '📹', title: 'Video & audio calls', desc: 'Jump into 1:1 calls from any conversation, right in your browser.' },
+  { icon: '🎯', title: 'Skill-matched roles', desc: 'Opportunities ranked against your profile, Rwanda-first.' },
+];
+
 export const Hero: React.FC = () => {
   return (
     <section className="hero" id="home">
@@ -46,6 +54,21 @@ export const Hero: React.FC = () => {
             <div key={s.label} className="hero-stat">
               <span className="stat-number">{s.value}</span>
               <span className="stat-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Why Mpuza — the modern, everything-in-one platform */}
+      <div className="container" style={{ paddingBottom: 'var(--space-2)' }}>
+        <div className="why-strip">
+          {whyItems.map((w) => (
+            <div key={w.title} className="why-card">
+              <span className="why-icon">{w.icon}</span>
+              <span>
+                <div className="why-title">{w.title}</div>
+                <div className="why-desc">{w.desc}</div>
+              </span>
             </div>
           ))}
         </div>

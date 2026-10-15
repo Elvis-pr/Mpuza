@@ -18,6 +18,7 @@ const opportunitiesRouter = require('./routes/opportunities');
 const skillsRouter = require('./routes/skills');
 const applicationsRouter = require('./routes/applications');
 const interviewsRouter = require('./routes/interviews');
+const connectRouter = require('./routes/connect');
 const authRouter = require('./routes/auth');
 
 const app = express();
@@ -49,6 +50,9 @@ app.use('/api/applications', applicationsRouter);
 
 // ===== INTERVIEWS =====
 app.use('/api/interviews', interviewsRouter);
+
+// ===== CONNECT (chat, presence config, voice/video note media) =====
+app.use('/api/connect', connectRouter);
 
 // Serve static frontend in production (local node server only).
 // On Vercel the frontend is served as static output (client/dist) and

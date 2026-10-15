@@ -122,3 +122,101 @@
 @keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes scale-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+
+/* ---- Connect button in the navbar ---- */
+.nav-connect {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out-expo),
+              box-shadow var(--duration-fast) var(--ease-out-expo),
+              border-color var(--duration-fast) var(--ease-out-expo);
+}
+.nav-connect:hover {
+  transform: translateY(-1px);
+  border-color: var(--color-primary-300);
+  box-shadow: 0 6px 18px rgb(234 88 12 / 0.16);
+}
+.nav-connect-icon { font-size: 15px; line-height: 1; }
+.nav-connect-badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-500);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 720px) {
+  .nav-connect-label { display: none; }
+  .nav-connect { padding: var(--space-2) var(--space-3); }
+}
+
+/* ---- Glassmorphic navbar (modern, still readable over any section) ---- */
+.navbar {
+  background: rgb(255 250 246 / 0.78);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  border-bottom: 1px solid rgb(233 216 205 / 0.7);
+}
+
+/* ---- Hero: floating gradient orbs for depth ---- */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  pointer-events: none;
+  animation: hero-drift 14s ease-in-out infinite alternate;
+}
+.hero::before { width: 340px; height: 340px; top: -90px; right: -60px; background: #fde68a; }
+.hero::after { width: 300px; height: 300px; bottom: -110px; left: -70px; background: #5eead4; animation-delay: -7s; }
+@keyframes hero-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-24px, 18px, 0) scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero::before, .hero::after { animation: none; }
+}
+
+/* ---- Why-Mpuza differentiator strip (glass cards over the gradient) ---- */
+.why-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+.why-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform var(--duration-fast) var(--ease-out-expo), background var(--duration-fast) var(--ease-out-expo);
+}
+.why-card:hover { transform: translateY(-4px); background: rgb(255 255 255 / 0.18); }
+.why-card .why-icon { font-size: var(--text-xl); line-height: 1; }
+.why-card .why-title { font-weight: 800; font-size: var(--text-sm); color: white; }
+.why-card .why-desc { font-size: var(--text-xs); color: rgb(255 255 255 / 0.82); margin-top: 2px; line-height: 1.5; }
+

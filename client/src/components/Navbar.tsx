@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from './Button';
 import { Logo } from './Logo';
 import { useAuth } from '../lib/auth';
@@ -28,6 +28,17 @@ export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [unread, setUnread] = useState(0);
+
+  // Unread totals are published by ConnectPanel.
+  useEffect(() => {
+    const onUnread = (e: Event) => {
+      const total = (e as CustomEvent).detail?.total ?? 0;
+      setUnread(total);
+    };
+    window.addEventListener('mpuza:unread', onUnread);
+    return () => window.removeEventListener('mpuza:unread', onUnread);
+  }, []);
 
   const handleNavigate = (e: React.MouseEvent<HTMLAnchorElement>, section: string) => {
     e.preventDefault();
@@ -72,6 +83,18 @@ export const Navbar: React.FC = () => {
       </ul>
 
       <div style={{ flex: 1 }} />
+
+      {/* Connect: open the messenger dock */}
+      <button
+        type="button"
+        className="nav-connect"
+        aria-label={unread > 0 ? `Open messages (${unread} unread)` : 'Open messages'}
+        onClick={() => window.dispatchEvent(new CustomEvent('mpuza:connect-open'))}
+      >
+        <span className="nav-connect-icon">💬</span>
+        <span className="nav-connect-label">Connect</span>
+        {unread > 0 && <span className="nav-connect-badge">{unread > 9 ? '9+' : unread}</span>}
+      </button>
 
       {user ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
