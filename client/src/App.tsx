@@ -1,3 +1,4 @@
+import React from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { OpportunitySection } from './components/OpportunitySection';
@@ -6,11 +7,47 @@ import { Footer } from './components/Footer';
 import { Splash } from './components/Splash';
 import { ConnectPanel } from './components/ConnectPanel';
 import { CallOverlay } from './components/CallOverlay';
+import { ProfilePage } from './components/ProfilePage';
 import { AuthProvider } from './lib/auth';
 
-export default function App() {
+// Simple SPA routing for profile pages
+function Router() {
+  const [path, setPath] = React.useState(window.location.pathname);
+
+  React.useEffect(() => {
+    const handleRoute = () => {
+      setPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handleRoute);
+    return () => window.removeEventListener('popstate', handleRoute);
+  }, []);
+
+  React.useEffect(() => {
+    if (path === '/') {
+      window.scrollTo(0, 0);
+    }
+  }, [path]);
+
+  if (path.startsWith('/profiles/')) {
+    const profileId = path.replace('/profiles/', '');
+    return (
+      <>
+        <Splash />
+        <div className="app">
+          <Navbar />
+          <main>
+            <ProfilePage profileId={profileId} />
+          </main>
+          <Footer />
+        </div>
+        <ConnectPanel />
+        <CallOverlay />
+      </>
+    );
+  }
+
   return (
-    <AuthProvider>
+    <>
       <Splash />
       <div className="app">
         <Navbar />
@@ -29,9 +66,16 @@ export default function App() {
         </main>
         <Footer />
       </div>
-      {/* Connect suite: messenger dock + WebRTC call overlay */}
       <ConnectPanel />
       <CallOverlay />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <Router />
     </AuthProvider>
   );
 }

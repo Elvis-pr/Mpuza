@@ -188,6 +188,36 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
 
+
+CREATE TABLE IF NOT EXISTS profiles (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  name            text NOT NULL,
+  avatar_url      text,
+  title           text,
+  company_id      text,
+  company_name    text,
+  hireable        boolean DEFAULT false,
+  contacts        jsonb DEFAULT '{}'::jsonb,
+  skills          text[] DEFAULT '{}'::text[],
+  created_at      timestamp with time zone DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_profiles_user ON profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_profiles_company ON profiles(company_id);
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+
+-- RLS policies for profiles
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "public profiles read" ON profiles;
+CREATE POLICY "public profiles read" ON profiles FOR SELECT USING (true);
+
+-- Profile is owned by the user (they can update their own)
+DROP POLICY IF EXISTS "owners update" ON profiles;
+CREATE POLICY "owners update" ON profiles FOR UPDATE USING (auth.uid() = user_id OR auth.uid() = null);
+
+-- ==================== OPPORTUNITIES (with owner reference) ====================
+
 -- Anon-key access (same pattern as applications: only the server calls these).
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "public all" ON users;

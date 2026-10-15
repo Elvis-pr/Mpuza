@@ -381,16 +381,34 @@ export const ConnectPanel: React.FC = () => {
                   <button
                     type="button"
                     key={m.id}
-                    className="member-row"
+                    className="w-full text-left p-3 hover:bg-gray-50 rounded-lg transition-colors border border-gray-200 hover:border-primary-300"
                     onClick={() => setPeer(m)}
                   >
-                    <span className="connect-avatar">{(m.name || '?').charAt(0).toUpperCase()}</span>
-                    <span className="member-meta">
-                      <span className="member-name">{m.name}</span>
-                      <span className="member-sub">{m.email}</span>
-                    </span>
-                    {unread[m.id] ? <span className="member-badge">{unread[m.id]}</span> : null}
-                    <span className={`member-dot ${onlineSet.has(m.id) ? 'on' : ''}`} />
+                    <div className="flex items-start gap-3">
+                      <div className="flex flex-col items-center space-y-1 flex-shrink-0">
+                        <span className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${onlineSet.has(m.id) ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                          {(m.name || '?').charAt(0).toUpperCase()}
+                        </span>
+                        {unread[m.id] && (
+                          <span className="text-[10px] font-medium text-green-700 bg-green-50 px-1.5 py-0.5 rounded-full">
+                            {unread[m.id]} new
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-gray-900 truncate">{m.name}</span>
+                          {m.hireable && (
+                            <span className="text-[10px] font-medium text-green-700 bg-green-50 px-1.5 py-0.5 rounded-full">
+                              Hiring
+                            </span>
+                          )}
+                        </div>
+                        {m.title && <div className="text-sm text-gray-600 truncate">{m.title}</div>}
+                        {m.company_name && <div className="text-sm text-primary-600 font-medium truncate">{m.company_name}</div>}
+                        {m.email && <div className="text-xs text-gray-400 truncate">{m.email}</div>}
+                      </div>
+                    </div>
                   </button>
                 ))}
               </div>

@@ -31,6 +31,12 @@ export interface Member {
   id: string;
   name: string;
   email?: string;
+  avatar_url?: string;
+  title?: string;
+  company_name?: string;
+  hireable?: boolean;
+  contacts?: Record<string, string>;
+  profile_url?: string;
 }
 
 export interface ConnectConfig {
@@ -81,11 +87,12 @@ async function getJson<T>(path: string): Promise<T> {
 }
 
 export async function listMembers(q = '', me = ''): Promise<Member[]> {
+  // Use the profiles endpoint which returns extended profile data
   const params = new URLSearchParams();
   if (q) params.set('q', q);
   if (me) params.set('me', me);
-  const data = await getJson<{ success: boolean; users: Member[] }>(`/users?${params}`);
-  return data.users ?? [];
+  const data = await getJson<{ success: boolean; profiles: Member[] }>(`/profiles?${params}`);
+  return data.profiles ?? [];
 }
 
 export async function fetchConversation(

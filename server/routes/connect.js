@@ -97,8 +97,8 @@ router.get('/users', async (req, res) => {
     let rows = [];
     if (sb) {
       const { data, error } = await sb
-        .from('users')
-        .select('id, name, email, created_at')
+        .from('profiles')
+        .select('id, name, avatar_url, title, company_id, company_name, hireable, contacts, created_at')
         .order('created_at', { ascending: false })
         .limit(200);
       if (error && !isMissingTable(error)) throw error;
@@ -110,7 +110,7 @@ router.get('/users', async (req, res) => {
         const path = require('path');
         const file = path.join(__dirname, '..', 'data', 'users.json');
         const j = JSON.parse(fs.readFileSync(file, 'utf8'));
-        rows = (j.users || []).map((u) => ({ id: u.id, name: u.name, email: u.email, created_at: u.created_at }));
+        rows = (j.users || []).map((u) => ({ id: u.id, name: u.name, email: u.email, created_at: u.created_at, avatar_url: u.avatar_url, title: u.title || null, company_id: u.company_id || null, company_name: u.company_name || null, hireable: u.hireable || false, contacts: u.contacts || {}, profile_url: "/profiles/" + u.id }));
       } catch { rows = []; }
     }
     if (me) rows = rows.filter((u) => u.id !== me);
