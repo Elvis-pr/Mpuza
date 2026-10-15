@@ -205,7 +205,6 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 CREATE INDEX IF NOT EXISTS idx_profiles_user ON profiles(user_id);
 CREATE INDEX IF NOT EXISTS idx_profiles_company ON profiles(company_id);
-CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
 
 -- RLS policies for profiles
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
