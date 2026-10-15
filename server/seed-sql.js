@@ -213,7 +213,7 @@ CREATE POLICY "public profiles read" ON profiles FOR SELECT USING (true);
 
 -- Profile is owned by the user (they can update their own)
 DROP POLICY IF EXISTS "owners update" ON profiles;
-CREATE POLICY "owners update" ON profiles FOR UPDATE USING (auth.uid() = user_id OR auth.uid() = null);
+CREATE POLICY "owners update" ON profiles FOR UPDATE USING (auth.uid()::text = user_id OR auth.uid() IS NULL);
 
 -- ==================== OPPORTUNITIES (with owner reference) ====================
 
