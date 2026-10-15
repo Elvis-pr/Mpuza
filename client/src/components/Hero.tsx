@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAuth } from '../lib/auth';
 import { WhyStrip } from './WhyStrip';
 
@@ -7,12 +7,8 @@ import { WhyStrip } from './WhyStrip';
  *
  * A warm, friendly, distinct hero:
  *  - A soft, warm gradient instead of a cold flat blue
- *  - A friendly "how it works" mini-strip
+ *  - A friendly "how it works" mini-strip (Explore → Apply → Grow)
  *  - Rounded, hugging stat cards with a paper texture
- *
- * The "Why Mpuza" differentiator strip is shown ONLY after login, so visitors
- * land on a clean invite screen while logged-in users immediately see the
- * connect suite (chat, voice/video notes, 1:1 calls) they just unlocked.
  */
 
 const stats = [
@@ -27,15 +23,9 @@ const steps = [
   { icon: '🚀', title: 'Go get it', desc: 'Apply, prepare for interviews, and grow into the role you deserve.' },
 ];
 
-/** What makes Mpuza different from ordinary job boards. */
-const whyItems = [
-  { icon: '💬', title: 'Real-time chat', desc: 'Message recruiters and peers instantly — no email ping-pong.' },
-  { icon: '🎙️', title: 'Voice & video notes', desc: 'Say more than text allows: send voice notes and video intros right in the chat.' },
-  { icon: '📹', title: 'Video & audio calls', desc: 'Jump into 1:1 calls from any conversation, right in your browser.' },
-  { icon: '🎯', title: 'Skill-matched roles', desc: 'Opportunities ranked against your profile, Rwanda-first.' },
-];
-
 export const Hero: React.FC = () => {
+  const { user } = useAuth();
+
   return (
     <section className="hero" id="home">
       <div className="container hero-content">
@@ -65,22 +55,8 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Why Mpuza differentiator strip — only after login */
-      {user && (
-        <div className="container" style={{ paddingBottom: 'var(--space-2)' }}>
-          <div className="why-strip">
-            {whyItems.map((w) => (
-              <div key={w.title} className="why-card">
-                <span className="why-icon">{w.icon}</span>
-                <span>
-                  <div className="why-title">{w.title}</div>
-                  <div className="why-desc">{w.desc}</div>
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Why Mpuza differentiator strip — only after login */}
+      {user && <WhyStrip />}
 
       {/* How it works strip */}
       <div className="container" style={{ padding: 'var(--space-6) 0 var(--space-4)' }}>

@@ -134,7 +134,6 @@ export const StoryMark: React.FC<{ size?: number }> = ({ size = 34 }) => {
         role="img"
         aria-label="MPUZA — connect me"
         style={{ display: 'block', width: '100%', height: '100%' }}
-        draggable={false}
       >
         <defs>
           <radialGradient id={glowId} cx="0.5" cy="0.5" r="0.5">
