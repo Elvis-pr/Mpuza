@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from './Button';
-import { Logo } from './Logo';
+import { StoryMark } from './Logo';
 import { useAuth } from '../lib/auth';
 import { AuthModal } from './AuthModal';
 
 /**
- * Navbar with the signature MPUZA "Ascend M" brand mark + auth state.
+ * Navbar: glassmorphic top bar. The brand chip contains the signature
+ * "connect me" scene (two people + link line + spark) — same artwork the splash
+ * plays on open, so the logo at open = the logo on top after entering.
  */
 
 const Brand = () => (
   <div className="nav-brand">
-    <Logo variant="mark" size={38} />
+    <StoryMark size={38} />
     <span className="brand-name">
       MPUZA <span>.</span>
     </span>
@@ -21,6 +23,7 @@ const navItems = [
   { label: 'Home', section: 'home' },
   { label: 'Explore', section: 'opportunities' },
   { label: 'Career Hub', section: 'career-hub' },
+  { label: 'Connect', section: 'connect-people' },
 ];
 
 export const Navbar: React.FC = () => {
@@ -83,8 +86,21 @@ export const Navbar: React.FC = () => {
       </ul>
 
       <div style={{ flex: 1 }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
+        {navItems.map((item) => (
+          <a
+            key={item.section}
+            href={`#${item.section}`}
+            className={active === item.section ? 'nav-link active' : 'nav-link'}
+            onClick={(e) => handleNavigate(e, item.section)}
+            aria-current={active === item.section ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
 
-      {/* Connect: open the messenger dock */}
+      {/* Connect messenger dock — visible to logged-in users only */}
       <button
         type="button"
         className="nav-connect"
@@ -96,33 +112,35 @@ export const Navbar: React.FC = () => {
         {unread > 0 && <span className="nav-connect-badge">{unread > 9 ? '9+' : unread}</span>}
       </button>
 
-      {user ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-          <span
-            title={user.email}
-            style={{
-              fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-text)',
-              background: 'var(--color-primary-50)', border: '2px solid var(--color-border)',
-              borderRadius: 'var(--radius-full)', padding: 'var(--space-1) var(--space-3)',
-              maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-            }}
-          >
-            👋 {user.name}
-          </span>
-          <Button variant="ghost" size="sm" onClick={() => logout()}>
-            Log out
-          </Button>
-        </div>
-      ) : (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-          <Button variant="ghost" size="sm" onClick={() => openAuth('login')}>
-            Log in
-          </Button>
-          <Button variant="primary" size="sm" onClick={() => openAuth('register')}>
-            Get Started
-          </Button>
-        </div>
-      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+        {user ? (
+          <>
+            <span
+              title={user.email}
+              style={{
+                fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--color-text)',
+                background: 'var(--color-primary-50)', border: '2px solid var(--color-border)',
+                borderRadius: 'var(--radius-full)', padding: 'var(--space-1) var(--space-3)',
+                maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              }}
+            >
+              👋 {user.name}
+            </span>
+            <Button variant="ghost" size="sm" onClick={() => logout()}>
+              Log out
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button variant="ghost" size="sm" onClick={() => openAuth('login')}>
+              Log in
+            </Button>
+            <Button variant="primary" size="sm" onClick={() => openAuth('register')}>
+              Get Started
+            </Button>
+          </>
+        )}
+      </div>
       <AuthModal open={authOpen} initialMode={authMode} onClose={() => setAuthOpen(false)} />
     </header>
   );

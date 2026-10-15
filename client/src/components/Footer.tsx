@@ -1,5 +1,5 @@
 import React from 'react';
-import { Logo } from './Logo';
+import { StoryMark } from './Logo';
 
 /**
  * Footer: warm, friendly, and minimal — with signature brand.
@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-brand">
-          <Logo variant="mark" size={30} />
+          <StoryMark size={30} />
           <span className="brand-name" style={{ color: 'white', fontFamily: 'var(--font-display)' }}>
             MPUZA <span>.</span>
           </span>

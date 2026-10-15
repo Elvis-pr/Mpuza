@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useAuth } from '../lib/auth';
+import { WhyStrip } from './WhyStrip';
 
 /**
  * Hero: the first impression.
  *
  * A warm, friendly, distinct hero:
  *  - A soft, warm gradient instead of a cold flat blue
- *  - A friendly "how it works" mini-strip (Explore → Apply → Grow)
+ *  - A friendly "how it works" mini-strip
  *  - Rounded, hugging stat cards with a paper texture
+ *
+ * The "Why Mpuza" differentiator strip is shown ONLY after login, so visitors
+ * land on a clean invite screen while logged-in users immediately see the
+ * connect suite (chat, voice/video notes, 1:1 calls) they just unlocked.
  */
 
 const stats = [
@@ -59,20 +65,22 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Why Mpuza — the modern, everything-in-one platform */}
-      <div className="container" style={{ paddingBottom: 'var(--space-2)' }}>
-        <div className="why-strip">
-          {whyItems.map((w) => (
-            <div key={w.title} className="why-card">
-              <span className="why-icon">{w.icon}</span>
-              <span>
-                <div className="why-title">{w.title}</div>
-                <div className="why-desc">{w.desc}</div>
-              </span>
-            </div>
-          ))}
+      {/* Why Mpuza differentiator strip — only after login */
+      {user && (
+        <div className="container" style={{ paddingBottom: 'var(--space-2)' }}>
+          <div className="why-strip">
+            {whyItems.map((w) => (
+              <div key={w.title} className="why-card">
+                <span className="why-icon">{w.icon}</span>
+                <span>
+                  <div className="why-title">{w.title}</div>
+                  <div className="why-desc">{w.desc}</div>
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* How it works strip */}
       <div className="container" style={{ padding: 'var(--space-6) 0 var(--space-4)' }}>

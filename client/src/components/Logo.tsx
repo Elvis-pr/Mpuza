@@ -100,3 +100,73 @@ export const Logo: React.FC<LogoProps> = ({ variant = 'mark', size = 40, withTag
     </span>
   );
 };
+
+
+/**
+ * StoryMark — the signature "connect me" scene (two people, teal link line,
+ * Connection Spark) as a compact gradient chip. This is the SAME artwork the
+ * splash animation plays on open, so the logo you see at open is identical to
+ * the logo on top after entering. The spark idles with the shared
+ * `.mpuza-spark` pulse and speeds up on navbar/footer hover.
+ */
+export const StoryMark: React.FC<{ size?: number }> = ({ size = 34 }) => {
+  const reactId = useId();
+  const glowId = `mpuzaStoryGlow${reactId.replace(/:/g, '')}`;
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: Math.round(size * 1.65),
+        height: size,
+        borderRadius: size * 0.32,
+        overflow: 'hidden',
+        background:
+          'linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700) 55%, var(--color-secondary-600))',
+        boxShadow: '0 4px 12px rgb(194 65 12 / 0.28), inset 0 0 0 1px rgb(255 255 255 / 0.35)',
+        flexShrink: 0,
+      }}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="73 10 174 106"
+        role="img"
+        aria-label="MPUZA — connect me"
+        style={{ display: 'block', width: '100%', height: '100%' }}
+        draggable={false}
+      >
+        <defs>
+          <radialGradient id={glowId} cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stopColor="#FFF7ED" stopOpacity="0.9" />
+            <stop offset="1" stopColor="#FFF7ED" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        {/* Person 1 (you) */}
+        <g fill="#FFF7ED">
+          <circle cx="96" cy="62" r="11" />
+          <path d="M81 92 C81 80 87 74 96 74 C105 74 111 80 111 92 Z" />
+        </g>
+
+        {/* Person 2 (your opportunity) */}
+        <g fill="#FFF7ED">
+          <circle cx="224" cy="58" r="11" />
+          <path d="M209 88 C209 76 215 70 224 70 C233 70 239 76 239 88 Z" />
+        </g>
+
+        {/* Teal link line bridging campus to career */}
+        <path d="M96 94 Q160 118 224 90" fill="none" stroke="#5EEAD4" strokeWidth="4.5" strokeLinecap="round" />
+
+        {/* Connection Spark — the "connect me" moment (pulses via CSS) */}
+        <circle cx="160" cy="52" r="34" fill={`url(#${glowId})`} opacity="0.85" />
+        <path
+          className="mpuza-spark"
+          d="M160 28 C162.4 36.2 167.8 41.6 176 44 C167.8 46.4 162.4 51.8 160 60 C157.6 51.8 152.2 46.4 144 44 C152.2 41.6 157.6 36.2 160 28 Z"
+          fill="#FFF7ED"
+        />
+      </svg>
+    </span>
+  );
+};
+
